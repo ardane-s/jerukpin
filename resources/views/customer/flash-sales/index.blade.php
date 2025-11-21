@@ -152,7 +152,7 @@
                                         </div>
                                         <div class="w-full bg-neutral-200 rounded-full h-2">
                                             <div class="bg-orange-600 h-2 rounded-full transition-all" 
-                                                 style="width: {{ ($sale->flash_sold / $sale->flash_stock) * 100 }}%"></div>
+                                                 style="width: {{ min(($sale->flash_sold / $sale->flash_stock) * 100, 100) }}%"></div>
                                         </div>
                                     </div>
                                 @endif
