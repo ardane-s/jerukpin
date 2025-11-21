@@ -7,25 +7,25 @@
             @if($product->images->first() && $product->images->first()->image_path !== 'products/placeholder-orange.jpg')
                 <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" 
                      alt="{{ $product->name }}" 
-                     class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
+                     class="w-full h-32 sm:h-40 md:h-48 object-cover group-hover:scale-105 transition-transform duration-500"
                      onerror="this.style.display='none'; document.getElementById('placeholder-product-{{ $product->id }}').style.display='flex';">
                 <!-- Orange Placeholder (hidden by default, shown on error) -->
-                <div id="placeholder-product-{{ $product->id }}" class="w-full h-48 bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200 flex items-center justify-center group-hover:scale-105 transition-transform duration-500 text-9xl" style="display: none;">🍊</div>
+                <div id="placeholder-product-{{ $product->id }}" class="w-full h-32 sm:h-40 md:h-48 bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200 flex items-center justify-center group-hover:scale-105 transition-transform duration-500 text-6xl sm:text-7xl md:text-9xl" style="display: none;">🍊</div>
             @else
                 <!-- Orange Placeholder matching the design -->
-                <div class="w-full h-48 bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200 flex items-center justify-center group-hover:scale-105 transition-transform duration-500 text-9xl">🍊</div>
+                <div class="w-full h-32 sm:h-40 md:h-48 bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200 flex items-center justify-center group-hover:scale-105 transition-transform duration-500 text-6xl sm:text-7xl md:text-9xl">🍊</div>
             @endif
             <!-- Gradient Overlay on Hover -->
             <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         </div>
-        <div class="p-4">
+        <div class="p-2 sm:p-3 md:p-4">
             @if($product->isBestSeller())
-                <span class="inline-block text-xs bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-2.5 py-1 rounded-full font-semibold shadow-sm">⭐ Best Seller</span>
+                <span class="inline-block text-xs bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-2 py-0.5 rounded-full font-semibold shadow-sm">⭐ Best Seller</span>
             @endif
-            <h3 class="font-bold mt-2 mb-1 text-neutral-800 group-hover:text-primary-600 transition-colors">{{ $product->name }}</h3>
-            <p class="text-sm text-neutral-500 mb-2">{{ $product->category->name }}</p>
+            <h3 class="font-bold mt-2 mb-1 text-sm sm:text-base text-neutral-800 group-hover:text-primary-600 transition-colors line-clamp-2">{{ $product->name }}</h3>
+            <p class="text-xs text-neutral-500 mb-1 sm:mb-2">{{ $product->category->name }}</p>
             @if($product->variants->first())
-                <p class="text-lg font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">Mulai Rp {{ number_format($product->variants->min('price'), 0, ',', '.') }}</p>
+                <p class="text-sm sm:text-base md:text-lg font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">Mulai Rp {{ number_format($product->variants->min('price'), 0, ',', '.') }}</p>
             @endif
             <div class="flex items-center justify-between mt-2">
                 <p class="text-xs text-neutral-500">📦 Terjual {{ $product->total_sold_count }}</p>

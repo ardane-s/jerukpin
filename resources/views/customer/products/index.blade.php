@@ -18,7 +18,7 @@
     <!-- Page Header -->
     <div class="flex items-center justify-between mb-8">
         <div>
-            <h1 class="text-4xl font-heading font-bold text-neutral-900 mb-2">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-neutral-900 mb-2">
                 <span class="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">Semua Produk</span>
             </h1>
             <p class="text-neutral-600">
@@ -28,9 +28,19 @@
     </div>
 
     <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Mobile Filter Toggle Button -->
+        <div class="lg:hidden mb-4">
+            <button id="mobile-filter-toggle" class="w-full px-4 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                </svg>
+                <span>Filter Produk</span>
+            </button>
+        </div>
+        
         <!-- Enhanced Filter Sidebar -->
-        <div class="w-full lg:w-72 flex-shrink-0">
-            <div class="bg-white rounded-2xl shadow-lg border-2 border-orange-100 overflow-hidden sticky top-24">
+        <div id="mobile-filter-sidebar" class="w-full lg:w-72 flex-shrink-0 hidden lg:block">
+            <div class="bg-white rounded-2xl shadow-lg border-2 border-orange-100 overflow-hidden lg:sticky lg:top-24">
                 <!-- Filter Header -->
                 <div class="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-4">
                     <h3 class="font-bold text-white text-lg flex items-center gap-2">
@@ -107,4 +117,16 @@
         </div>
     </div>
 </div>
+
+<script>
+// Mobile filter toggle
+const mobileFilterToggle = document.getElementById('mobile-filter-toggle');
+const mobileFilterSidebar = document.getElementById('mobile-filter-sidebar');
+
+if (mobileFilterToggle && mobileFilterSidebar) {
+    mobileFilterToggle.addEventListener('click', function() {
+        mobileFilterSidebar.classList.toggle('hidden');
+    });
+}
+</script>
 @endsection

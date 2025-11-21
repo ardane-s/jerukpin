@@ -9,16 +9,16 @@
         <div class="absolute top-1/2 left-1/3 w-64 h-64 bg-gradient-to-br from-yellow-200 to-yellow-100 rounded-full opacity-25 blur-3xl animate-float-slow"></div>
     </div>
     
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center" style="min-height: 100vh;">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div class="text-center lg:text-left space-y-8">
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center min-h-[70vh] md:min-h-screen">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center py-8 md:py-0">
+            <div class="text-center lg:text-left space-y-4 md:space-y-8">
                 <div class="inline-block">
-                    <span class="px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-full text-sm font-semibold shadow-lg animate-bounce-slow">
+                    <span class="px-3 py-1.5 md:px-4 md:py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-full text-xs md:text-sm font-semibold shadow-lg animate-bounce-slow">
                         🎉 Jeruk Segar Premium
                     </span>
                 </div>
                 
-                <h1 class="text-5xl md:text-6xl lg:text-7xl font-heading font-bold leading-tight">
+                <h1 class="text-3xl md:text-5xl lg:text-7xl font-heading font-bold leading-tight">
                     <span class="bg-gradient-to-r from-orange-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent">
                         Kesegaran Alami
                     </span>
@@ -26,15 +26,15 @@
                     <span class="text-neutral-800">Langsung ke Rumah</span>
                 </h1>
                 
-                <p class="text-xl md:text-2xl text-neutral-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                <p class="text-base md:text-xl lg:text-2xl text-neutral-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
                     Nikmati jeruk pilihan terbaik dari kebun organik, dipetik segar dan dikirim dengan cinta 🍊💚
                 </p>
                 
-                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start">
                     <a href="{{ route('products.index') }}" 
-                       class="group relative px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden">
+                       class="group relative px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl font-bold text-base md:text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden">
                         <span class="relative z-10 flex items-center justify-center gap-2">
-                            <svg class="w-6 h-6 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 md:w-6 md:h-6 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                             </svg>
                             <span>Belanja Sekarang</span>
@@ -44,7 +44,7 @@
                     
                     @if($activeSession || $upcomingSessions->count() > 0)
                     <a href="{{ route('flash-sales.index') }}" 
-                       class="group relative px-8 py-4 bg-white border-2 border-orange-500 text-orange-600 rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                       class="group relative px-6 py-3 md:px-8 md:py-4 bg-white border-2 border-orange-500 text-orange-600 rounded-2xl font-bold text-base md:text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
                         <span class="flex items-center justify-center gap-2">
                             <span class="animate-pulse">🔥</span>
                             <span>Flash Sale Aktif</span>
@@ -137,8 +137,62 @@
         </div>
         
         @if($activeSession)
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-8">
-            @foreach($activeSession['sales']->take(5) as $sale)
+        {{-- Mobile: Horizontal Scroll --}}
+        <div class="md:hidden overflow-x-auto snap-x snap-mandatory scrollbar-hide -mx-4 px-4 mb-8">
+            <div class="flex gap-3 pb-4">
+                @foreach($activeSession['sales']->take(10) as $sale)
+                    <div class="flex-none w-40 snap-start group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border-2 border-orange-200 hover:border-orange-400">
+                        <div class="absolute top-2 right-2 z-10">
+                            <div class="px-2 py-0.5 bg-gradient-to-r from-red-500 to-orange-500 text-white text-xs font-bold rounded-full shadow-md">
+                                -{{ $sale->discount_percentage }}%
+                            </div>
+                        </div>
+                        
+                        <a href="{{ route('product.show', $sale->productVariant->product->slug) }}" class="block">
+                            @if($sale->productVariant->product->images->first())
+                                <div class="aspect-square overflow-hidden bg-gradient-to-br from-orange-50 to-orange-100">
+                                    <img src="{{ asset('storage/' . $sale->productVariant->product->images->first()->image_path) }}" 
+                                         alt="{{ $sale->productVariant->product->name }}"
+                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                         onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center text-5xl\'>🍊</div>';">
+                                </div>
+                            @else
+                                <div class="aspect-square bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
+                                    <div class="text-5xl">🍊</div>
+                                </div>
+                            @endif
+                            
+                            <div class="p-2">
+                                <h3 class="font-bold text-xs text-neutral-900 mb-1 line-clamp-2">{{ $sale->productVariant->product->name }}</h3>
+                                <div class="space-y-0.5">
+                                    <div class="text-xs text-neutral-400 line-through">
+                                        Rp {{ number_format($sale->original_price, 0, ',', '.') }}
+                                    </div>
+                                    <div class="text-sm font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+                                        Rp {{ number_format($sale->flash_price, 0, ',', '.') }}
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-2">
+                                    <div class="flex justify-between text-xs text-neutral-600 mb-0.5">
+                                        <span class="text-xs">{{ $sale->flash_sold }}</span>
+                                        <span class="text-xs">{{ $sale->flash_stock - $sale->flash_sold }}</span>
+                                    </div>
+                                    <div class="w-full bg-neutral-200 rounded-full h-1.5">
+                                        <div class="bg-gradient-to-r from-orange-500 to-red-500 h-1.5 rounded-full transition-all duration-500" 
+                                             style="width: {{ ($sale->flash_sold / $sale->flash_stock) * 100 }}%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        {{-- Desktop: Grid Layout --}}
+        <div class="hidden md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-8">
+            @foreach($activeSession['sales']->take(10) as $sale)
                 <div class="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-orange-200 hover:border-orange-400">
                     <div class="absolute top-3 right-3 z-10">
                         <div class="px-3 py-1 bg-gradient-to-r from-red-500 to-orange-500 text-white text-xs font-bold rounded-full shadow-lg">
@@ -202,42 +256,42 @@
 @endif
 
 {{-- 3. WHY CHOOSE US SECTION (Moved from #5) --}}
-<div class="bg-gradient-to-br from-orange-50 via-white to-green-50 py-20">
+<div class="bg-gradient-to-br from-orange-50 via-white to-green-50 py-12 md:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-heading font-bold text-neutral-900 mb-4">
+        <div class="text-center mb-8 md:mb-16">
+            <h2 class="text-2xl md:text-4xl lg:text-5xl font-heading font-bold text-neutral-900 mb-2 md:mb-4">
                 Kenapa Pilih <span class="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">JerukPin</span>?
             </h2>
-            <p class="text-xl text-neutral-600">Komitmen kami untuk kualitas dan kepuasan Anda</p>
+            <p class="text-base md:text-xl text-neutral-600">Komitmen kami untuk kualitas dan kepuasan Anda</p>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-orange-200">
-                <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-500 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform shadow-lg">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
+            <div class="group bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-md md:shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-orange-200">
+                <div class="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-green-400 to-green-500 rounded-xl md:rounded-2xl flex items-center justify-center text-xl md:text-3xl mb-3 md:mb-6 group-hover:scale-110 transition-transform shadow-md md:shadow-lg">
                     🌱
                 </div>
-                <h3 class="text-2xl font-bold text-neutral-900 mb-3">100% Organik</h3>
-                <p class="text-neutral-600 leading-relaxed">
+                <h3 class="text-base md:text-2xl font-bold text-neutral-900 mb-2 md:mb-3">100% Organik</h3>
+                <p class="text-xs md:text-base text-neutral-600 leading-relaxed">
                     Ditanam tanpa pestisida berbahaya, dipetik langsung dari kebun organik terpilih untuk kesehatan keluarga Anda.
                 </p>
             </div>
             
-            <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-orange-200">
-                <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-500 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform shadow-lg">
+            <div class="group bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-md md:shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-orange-200">
+                <div class="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-blue-400 to-blue-500 rounded-xl md:rounded-2xl flex items-center justify-center text-xl md:text-3xl mb-3 md:mb-6 group-hover:scale-110 transition-transform shadow-md md:shadow-lg">
                     🚚
                 </div>
-                <h3 class="text-2xl font-bold text-neutral-900 mb-3">Pengiriman Cepat</h3>
-                <p class="text-neutral-600 leading-relaxed">
+                <h3 class="text-base md:text-2xl font-bold text-neutral-900 mb-2 md:mb-3">Pengiriman Cepat</h3>
+                <p class="text-xs md:text-base text-neutral-600 leading-relaxed">
                     Sistem logistik terpercaya memastikan jeruk sampai dalam kondisi segar maksimal 24 jam setelah pemesanan.
                 </p>
             </div>
             
-            <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-orange-200">
-                <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-500 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform shadow-lg">
+            <div class="group bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-md md:shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-orange-200 col-span-2 md:col-span-1">
+                <div class="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-orange-400 to-orange-500 rounded-xl md:rounded-2xl flex items-center justify-center text-xl md:text-3xl mb-3 md:mb-6 group-hover:scale-110 transition-transform shadow-md md:shadow-lg">
                     💰
                 </div>
-                <h3 class="text-2xl font-bold text-neutral-900 mb-3">Harga Terbaik</h3>
-                <p class="text-neutral-600 leading-relaxed">
+                <h3 class="text-base md:text-2xl font-bold text-neutral-900 mb-2 md:mb-3">Harga Terbaik</h3>
+                <p class="text-xs md:text-base text-neutral-600 leading-relaxed">
                     Langsung dari petani ke konsumen, tanpa perantara. Harga terjangkau dengan kualitas premium terjamin.
                 </p>
             </div>
@@ -304,38 +358,38 @@
 @endif
 
 {{-- 5. BENEFITS SECTION (NEW) --}}
-<div class="bg-gradient-to-br from-orange-500 via-orange-600 to-red-500 py-20">
+<div class="bg-gradient-to-br from-orange-500 via-orange-600 to-red-500 py-12 md:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <h2 class="text-4xl md:text-5xl font-heading font-bold text-white mb-4">
+        <div class="text-center mb-6 md:mb-12">
+            <h2 class="text-2xl md:text-4xl lg:text-5xl font-heading font-bold text-white mb-2 md:mb-4">
                 Keuntungan Belanja di JerukPin
             </h2>
-            <p class="text-xl text-white/90">Pengalaman berbelanja yang menyenangkan dan menguntungkan</p>
+            <p class="text-base md:text-xl text-white/90">Pengalaman berbelanja yang menyenangkan dan menguntungkan</p>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300">
-                <div class="text-5xl mb-4">🌱</div>
-                <h3 class="text-xl font-bold text-white mb-2">100% Organik</h3>
-                <p class="text-white/80 text-sm">Jeruk dari kebun organik bersertifikat tanpa pestisida</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+            <div class="bg-white/10 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-6 border border-white/20 hover:bg-white/20 transition-all duration-300">
+                <div class="text-3xl md:text-5xl mb-2 md:mb-4">🌱</div>
+                <h3 class="text-base md:text-xl font-bold text-white mb-1 md:mb-2">100% Organik</h3>
+                <p class="text-white/80 text-xs md:text-sm">Jeruk dari kebun organik bersertifikat tanpa pestisida</p>
             </div>
             
-            <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300">
-                <div class="text-5xl mb-4">🚚</div>
-                <h3 class="text-xl font-bold text-white mb-2">Pengiriman 24 Jam</h3>
-                <p class="text-white/80 text-sm">Sampai dalam 24 jam untuk area Jakarta & sekitarnya</p>
+            <div class="bg-white/10 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-6 border border-white/20 hover:bg-white/20 transition-all duration-300">
+                <div class="text-3xl md:text-5xl mb-2 md:mb-4">🚚</div>
+                <h3 class="text-base md:text-xl font-bold text-white mb-1 md:mb-2">Pengiriman 24 Jam</h3>
+                <p class="text-white/80 text-xs md:text-sm">Sampai dalam 24 jam untuk area Jakarta & sekitarnya</p>
             </div>
             
-            <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300">
-                <div class="text-5xl mb-4">💯</div>
-                <h3 class="text-xl font-bold text-white mb-2">Jaminan Segar</h3>
-                <p class="text-white/80 text-sm">Garansi uang kembali 100% jika produk tidak segar</p>
+            <div class="bg-white/10 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-6 border border-white/20 hover:bg-white/20 transition-all duration-300">
+                <div class="text-3xl md:text-5xl mb-2 md:mb-4">💯</div>
+                <h3 class="text-base md:text-xl font-bold text-white mb-1 md:mb-2">Jaminan Segar</h3>
+                <p class="text-white/80 text-xs md:text-sm">Garansi uang kembali 100% jika produk tidak segar</p>
             </div>
             
-            <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300">
-                <div class="text-5xl mb-4">🎁</div>
-                <h3 class="text-xl font-bold text-white mb-2">Gratis Ongkir</h3>
-                <p class="text-white/80 text-sm">Untuk pembelian minimal Rp 100.000</p>
+            <div class="bg-white/10 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-6 border border-white/20 hover:bg-white/20 transition-all duration-300">
+                <div class="text-3xl md:text-5xl mb-2 md:mb-4">🎁</div>
+                <h3 class="text-base md:text-xl font-bold text-white mb-1 md:mb-2">Gratis Ongkir</h3>
+                <p class="text-white/80 text-xs md:text-sm">Untuk pembelian minimal Rp 100.000</p>
             </div>
         </div>
     </div>
@@ -404,17 +458,71 @@
 {{-- 7. CUSTOMER REVIEWS SECTION (NEW) --}}
 <div class="bg-white py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <div class="inline-block px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm font-semibold mb-4">
+        <div class="text-center mb-6 md:mb-12">
+            <div class="inline-block px-3 py-1.5 md:px-4 md:py-2 bg-purple-100 text-purple-800 rounded-full text-xs md:text-sm font-semibold mb-2 md:mb-4">
                 💬 Testimoni Pelanggan
             </div>
-            <h2 class="text-4xl md:text-5xl font-heading font-bold text-neutral-900 mb-4">
+            <h2 class="text-2xl md:text-4xl lg:text-5xl font-heading font-bold text-neutral-900 mb-2 md:mb-4">
                 Apa Kata <span class="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">Mereka</span>?
             </h2>
-            <p class="text-xl text-neutral-600">Ribuan pelanggan puas dengan produk kami</p>
+            <p class="text-base md:text-xl text-neutral-600">Ribuan pelanggan puas dengan produk kami</p>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {{-- Mobile: Horizontal Scroll --}}
+        <div class="md:hidden overflow-x-auto snap-x snap-mandatory scrollbar-hide -mx-4 px-4">
+            <div class="flex gap-3 pb-4">
+                <div class="flex-none w-72 snap-start bg-gradient-to-br from-orange-50 to-white rounded-xl p-4 shadow-md border border-orange-100">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-500 rounded-full flex items-center justify-center text-2xl flex-shrink-0">
+                            🍊
+                        </div>
+                        <div class="min-w-0">
+                            <h4 class="font-bold text-neutral-900 text-sm">Ibu Sarah</h4>
+                            <p class="text-xs text-neutral-600">Jakarta Selatan</p>
+                            <div class="flex gap-0.5 mt-0.5">
+                                <span class="text-yellow-400 text-xs">⭐⭐⭐⭐⭐</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-neutral-700 italic text-sm">"Jeruknya segar banget! Anak-anak suka sekali. Pengiriman cepat dan packaging rapi. Pasti order lagi!"</p>
+                </div>
+                
+                <div class="flex-none w-72 snap-start bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow-md border border-green-100">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center text-2xl flex-shrink-0">
+                            🍊
+                        </div>
+                        <div class="min-w-0">
+                            <h4 class="font-bold text-neutral-900 text-sm">Pak Budi</h4>
+                            <p class="text-xs text-neutral-600">Tangerang</p>
+                            <div class="flex gap-0.5 mt-0.5">
+                                <span class="text-yellow-400 text-xs">⭐⭐⭐⭐⭐</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-neutral-700 italic text-sm">"Harga terjangkau dengan kualitas premium. Jeruknya manis dan juicy. Recommended untuk yang cari jeruk organik!"</p>
+                </div>
+                
+                <div class="flex-none w-72 snap-start bg-gradient-to-br from-blue-50 to-white rounded-xl p-4 shadow-md border border-blue-100">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-500 rounded-full flex items-center justify-center text-2xl flex-shrink-0">
+                            🍊
+                        </div>
+                        <div class="min-w-0">
+                            <h4 class="font-bold text-neutral-900 text-sm">Mbak Dina</h4>
+                            <p class="text-xs text-neutral-600">Bekasi</p>
+                            <div class="flex gap-0.5 mt-0.5">
+                                <span class="text-yellow-400 text-xs">⭐⭐⭐⭐⭐</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-neutral-700 italic text-sm">"Pelayanan ramah, produk berkualitas. Flash sale-nya juga sering ada diskon besar. Langganan terus deh!"</p>
+                </div>
+            </div>
+        </div>
+
+        {{-- Desktop: Grid Layout --}}
+        <div class="hidden md:grid md:grid-cols-3 gap-8">
             <div class="bg-gradient-to-br from-orange-50 to-white rounded-2xl p-6 shadow-lg border border-orange-100">
                 <div class="flex items-center gap-4 mb-4">
                     <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-500 rounded-full flex items-center justify-center text-3xl">

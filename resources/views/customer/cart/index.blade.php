@@ -17,7 +17,7 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Page Header -->
     <div class="mb-8">
-        <h1 class="text-4xl font-heading font-bold text-neutral-900 mb-2">
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-neutral-900 mb-2">
             <span class="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">🛒 Keranjang Belanja</span>
         </h1>
         @if($cartItems->count() > 0)
@@ -32,17 +32,17 @@
             <!-- Cart Items -->
             <div class="lg:col-span-2 space-y-4">
                 @foreach($cartItems as $item)
-                    <div class="bg-white rounded-2xl shadow-lg border-2 border-orange-100 p-6 hover:shadow-xl transition">
-                        <div class="flex gap-6">
+                    <div class="bg-white rounded-2xl shadow-lg border-2 border-orange-100 p-4 sm:p-6 hover:shadow-xl transition">
+                        <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
                             <!-- Product Image -->
                             @if($item->productVariant->product->images->first())
                                 <img src="{{ asset('storage/' . $item->productVariant->product->images->first()->image_path) }}" 
                                      alt="{{ $item->productVariant->product->name }}" 
-                                     class="w-32 h-32 object-cover rounded-xl border-2 border-orange-200"
+                                     class="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-xl border-2 border-orange-200 mx-auto sm:mx-0"
                                      onerror="this.onerror=null; this.src=''; this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="w-32 h-32 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-xl flex items-center justify-center text-5xl border-2 border-orange-200" style="display:none;">🍊</div>
+                                <div class="w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-xl flex items-center justify-center text-4xl sm:text-5xl border-2 border-orange-200 mx-auto sm:mx-0" style="display:none;">🍊</div>
                             @else
-                                <div class="w-32 h-32 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-xl flex items-center justify-center text-5xl border-2 border-orange-200">🍊</div>
+                                <div class="w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-xl flex items-center justify-center text-4xl sm:text-5xl border-2 border-orange-200 mx-auto sm:mx-0">🍊</div>
                             @endif
                             
                             <!-- Product Info -->
@@ -57,8 +57,8 @@
                                 </div>
                                 
                                 <!-- Quantity Controls -->
-                                <div class="flex items-center gap-4 mt-4">
-                                    <div class="flex items-center gap-2">
+                                <div class="flex flex-col sm:flex-row items-center gap-4 mt-4">
+                                    <div class="flex items-center gap-2 w-full sm:w-auto justify-center">
                                         <form action="{{ route('cart.update', $item->id) }}" method="POST" class="inline">
                                             @csrf
                                             @method('PUT')
@@ -80,9 +80,9 @@
                                         </form>
                                     </div>
                                     
-                                    <div class="flex-1 text-right">
+                                    <div class="flex-1 text-center sm:text-right">
                                         <p class="text-sm text-neutral-600">Subtotal</p>
-                                        <p class="text-xl font-bold text-neutral-900">
+                                        <p class="text-lg sm:text-xl font-bold text-neutral-900">
                                             Rp {{ number_format($item->price * $item->quantity, 0, ',', '.') }}
                                         </p>
                                     </div>
@@ -90,7 +90,7 @@
                             </div>
                             
                             <!-- Remove Button -->
-                            <div>
+                            <div class="absolute top-4 right-4 sm:relative sm:top-0 sm:right-0">
                                 <form action="{{ route('cart.remove', $item->id) }}" method="POST" id="removeForm{{ $item->id }}">
                                     @csrf
                                     @method('DELETE')
@@ -121,7 +121,7 @@
 
             <!-- Order Summary Sidebar -->
             <div class="lg:col-span-1">
-                <div class="bg-white rounded-2xl shadow-lg border-2 border-orange-100 p-6 sticky top-24">
+                <div class="bg-white rounded-2xl shadow-lg border-2 border-orange-100 p-4 sm:p-6 lg:sticky lg:top-24">
                     <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
                         📋 Ringkasan Pesanan
                     </h2>

@@ -297,7 +297,8 @@
                     @auth
                         @if(auth()->user()->role !== 'super_admin')
                             <!-- Cart Button with Hover Dropdown -->
-                            <div class="relative cart-dropdown-container">
+                            <!-- Cart Button - Hidden, moved to hamburger menu -->
+                            <div class="hidden">
                                 <a href="{{ route('cart.index') }}" class="flex items-center gap-2 px-3 py-2 border border-white/30 rounded-lg bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all duration-300 group">
                                     <span class="text-lg group-hover:scale-110 transition-transform duration-300">🛒</span>
                                     <span class="hidden sm:inline text-sm font-medium text-white">Keranjang</span>
@@ -456,8 +457,8 @@
                             </div>
                         @endif
                     @else
-                        <!-- Guest Cart Button with Dropdown -->
-                        <div class="relative cart-dropdown-container">
+                        {{-- Guest Cart Button - Show on desktop, hidden on mobile (in hamburger menu) --}}
+                        <div class="hidden md:block cart-dropdown-container relative">
                             <a href="{{ route('cart.index') }}" class="flex items-center gap-2 px-3 py-2 border border-white/30 rounded-lg bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all duration-300 group">
                                 <span class="text-lg group-hover:scale-110 transition-transform duration-300">🛒</span>
                                 <span class="hidden sm:inline text-sm font-medium text-white">Keranjang</span>
@@ -487,7 +488,7 @@
                                 @endif
                             </a>
                             
-                            <!-- Guest Cart Hover Dropdown -->
+                            {{-- Guest Cart Hover Dropdown --}}
                             <div class="cart-dropdown absolute right-0 mt-4 w-80 bg-white rounded-lg shadow-2xl border border-neutral-200 z-50 opacity-0 invisible transform scale-95 origin-top-right transition-all duration-300">
                                 @if($guestCartCount > 0)
                                     <div class="p-4">
@@ -553,12 +554,12 @@
                             </form>
                         @endif
                     @else
-                        <a href="{{ route('login') }}" class="group relative px-4 py-1.5 bg-gradient-to-r from-primary-500 via-primary-600 to-secondary-500 text-white rounded-lg font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 overflow-hidden">
+                        <a href="{{ route('register') }}" class="group relative px-4 py-1.5 bg-gradient-to-r from-primary-500 via-primary-600 to-secondary-500 text-white rounded-lg font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 overflow-hidden">
                             <span class="relative z-10 flex items-center gap-1.5 text-sm">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
                                 </svg>
-                                <span>Masuk / Daftar</span>
+                                <span>Daftar</span>
                             </span>
                             <div class="absolute inset-0 bg-gradient-to-r from-secondary-500 to-primary-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </a>
@@ -574,32 +575,123 @@
                             </div>
                         </button>
                         
-                        <!-- Dropdown Menu with Animation -->
-                        <div id="menu-dropdown" class="absolute right-0 mt-4 w-56 bg-white rounded-lg shadow-xl border border-neutral-200 py-2 z-50 opacity-0 invisible transform scale-95 origin-top-right transition-all duration-300">
-                            <a href="{{ route('orders.track') }}" class="block px-4 py-2.5 text-sm text-neutral-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">
-                                <span class="flex items-center gap-2">
-                                    <span>📦</span>
-                                    <span>Lacak Pesanan</span>
+                        <!-- Mobile Menu Dropdown (Full Navigation) -->
+                        <div id="menu-dropdown" class="absolute right-0 mt-4 w-72 sm:w-80 bg-white rounded-lg shadow-xl border border-neutral-200 py-2 z-50 opacity-0 invisible transform scale-95 origin-top-right transition-all duration-300 max-h-[80vh] overflow-y-auto">
+                            <!-- Main Navigation Links (Mobile Only) -->
+                            <div class="md:hidden border-b border-neutral-200 pb-2 mb-2">
+                                <a href="{{ route('home') }}" class="block px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
+                                    <span class="flex items-center gap-3">
+                                        <span class="text-xl">🏠</span>
+                                        <span>Beranda</span>
+                                    </span>
+                                </a>
+                            
+                            <!-- Cart Link in Hamburger -->
+                            <a href="{{ route('cart.index') }}" class="block px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
+                                <span class="flex items-center gap-3">
+                                    <span class="text-xl">🛒</span>
+                                    <span>Keranjang</span>
+                                    @auth
+                                        @php
+                                            $cart = auth()->user()->cart;
+                                            $cartItems = $cart ? $cart->cartItems()->get() : collect();
+                                            $cartCount = $cartItems->sum('quantity');
+                                        @endphp
+                                        @if($cartCount > 0)
+                                            <span class="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-0.5 font-bold">{{ $cartCount }}</span>
+                                        @endif
+                                    @else
+                                        @php
+                                            $sessionCart = session('cart', []);
+                                            $guestCartCount = array_sum(array_column($sessionCart, 'quantity'));
+                                        @endphp
+                                        @if($guestCartCount > 0)
+                                            <span class="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-0.5 font-bold">{{ $guestCartCount }}</span>
+                                        @endif
+                                    @endauth
                                 </span>
                             </a>
-                            <a href="{{ route('contact') }}" class="block px-4 py-2.5 text-sm text-neutral-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">
-                                <span class="flex items-center gap-2">
-                                    <span>📞</span>
-                                    <span>Kontak Kami</span>
-                                </span>
-                            </a>
-                            <a href="{{ route('about') }}" class="block px-4 py-2.5 text-sm text-neutral-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">
-                                <span class="flex items-center gap-2">
-                                    <span>ℹ️</span>
-                                    <span>Tentang Kami</span>
-                                </span>
-                            </a>
-                            <a href="{{ route('faq') }}" class="block px-4 py-2.5 text-sm text-neutral-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">
-                                <span class="flex items-center gap-2">
-                                    <span>❓</span>
-                                    <span>FAQ</span>
-                                </span>
-                            </a>
+                            
+                                <a href="{{ route('products.index') }}" class="block px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
+                                    <span class="flex items-center gap-3">
+                                        <span class="text-xl">🍊</span>
+                                        <span>Produk</span>
+                                    </span>
+                                </a>
+                                
+                                {{-- Kategori Expandable --}}
+                                <div class="mobile-kategori-section">
+                                    <button id="mobile-kategori-toggle" class="w-full px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-orange-50 hover:text-orange-600 transition-colors flex items-center gap-2">
+                                        <span class="text-xl flex-shrink-0">📂</span>
+                                        <span class="flex-1 text-left">Kategori</span>
+                                        <svg id="mobile-kategori-arrow" class="w-4 h-4 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </button>
+                                    <div id="mobile-kategori-list" class="hidden bg-neutral-50 border-l-4 border-orange-500">
+                                        @php
+                                            $categories = \App\Models\Category::orderBy('name')->get();
+                                        @endphp
+                                        @forelse($categories as $category)
+                                            <a href="{{ route('products.index', ['category' => $category->slug]) }}" class="block px-8 py-2.5 text-sm text-neutral-600 hover:bg-orange-100 hover:text-orange-700 transition-colors">
+                                                {{ $category->name }}
+                                            </a>
+                                        @empty
+                                            <div class="px-8 py-2.5 text-sm text-neutral-500">Belum ada kategori</div>
+                                        @endforelse
+                                    </div>
+                                </div>
+                                
+                                {{-- Promo Expandable --}}
+                                <div class="mobile-promo-section">
+                                    <button id="mobile-promo-toggle" class="w-full px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-orange-50 hover:text-orange-600 transition-colors flex items-center gap-2">
+                                        <span class="text-xl flex-shrink-0">🎁</span>
+                                        <span class="flex-1 text-left">Promo</span>
+                                        <svg id="mobile-promo-arrow" class="w-4 h-4 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </button>
+                                    <div id="mobile-promo-list" class="hidden bg-neutral-50 border-l-4 border-red-500">
+                                        <a href="{{ route('flash-sales.index') }}" class="block px-8 py-2.5 text-sm text-neutral-600 hover:bg-red-50 hover:text-red-700 transition-colors">
+                                            🔥 Flash Sale
+                                        </a>
+                                        <a href="#" class="block px-8 py-2.5 text-sm text-neutral-600 hover:bg-orange-50 hover:text-orange-700 transition-colors">
+                                            🎁 Bundle Deals
+                                        </a>
+                                        <a href="#" class="block px-8 py-2.5 text-sm text-neutral-600 hover:bg-yellow-50 hover:text-yellow-700 transition-colors">
+                                            🏷️ Diskon Spesial
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {{-- Utility Links - Consistent styling with main navigation --}}
+                            <div class="border-t border-neutral-200">
+                                <a href="{{ route('orders.track') }}" class="block px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
+                                    <span class="flex items-center gap-3">
+                                        <span class="text-xl">📦</span>
+                                        <span>Lacak Pesanan</span>
+                                    </span>
+                                </a>
+                                <a href="{{ route('contact') }}" class="block px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
+                                    <span class="flex items-center gap-3">
+                                        <span class="text-xl">📞</span>
+                                        <span>Kontak Kami</span>
+                                    </span>
+                                </a>
+                                <a href="{{ route('about') }}" class="block px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
+                                    <span class="flex items-center gap-3">
+                                        <span class="text-xl">ℹ️</span>
+                                        <span>Tentang Kami</span>
+                                    </span>
+                                </a>
+                                <a href="{{ route('faq') }}" class="block px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
+                                    <span class="flex items-center gap-3">
+                                        <span class="text-xl">❓</span>
+                                        <span>FAQ</span>
+                                    </span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -750,6 +842,40 @@
                 hamburgerLine3.style.transform = 'rotate(0) translateY(0)';
             }
         });
+
+        // Mobile menu expandable sections (Kategori and Promo)
+        const mobileKategoriToggle = document.getElementById('mobile-kategori-toggle');
+        const mobileKategoriList = document.getElementById('mobile-kategori-list');
+        const mobileKategoriArrow = document.getElementById('mobile-kategori-arrow');
+        
+        if (mobileKategoriToggle) {
+            mobileKategoriToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                mobileKategoriList.classList.toggle('hidden');
+                if (mobileKategoriList.classList.contains('hidden')) {
+                    mobileKategoriArrow.style.transform = 'rotate(0deg)';
+                } else {
+                    mobileKategoriArrow.style.transform = 'rotate(180deg)';
+                }
+            });
+        }
+        
+        const mobilePromoToggle = document.getElementById('mobile-promo-toggle');
+        const mobilePromoList = document.getElementById('mobile-promo-list');
+        const mobilePromoArrow = document.getElementById('mobile-promo-arrow');
+        
+        if (mobilePromoToggle) {
+            mobilePromoToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                mobilePromoList.classList.toggle('hidden');
+                if (mobilePromoList.classList.contains('hidden')) {
+                    mobilePromoArrow.style.transform = 'rotate(0deg)';
+                } else {
+                    mobilePromoArrow.style.transform = 'rotate(180deg)';
+                }
+            });
+        }
+
 
         // Member Account Dropdown Hover (changed from click)
         const memberBtn = document.getElementById('member-dropdown-btn');
