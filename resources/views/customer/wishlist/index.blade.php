@@ -19,24 +19,6 @@
                         @method('DELETE')
                         <button type="submit" class="bg-white rounded-full p-2 shadow-md hover:bg-red-50 transition">
                             <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                            </svg>
-                        </button>
-                    </form>
-
-                    <a href="{{ route('product.show', $product->slug) }}">
-                        @if($product->images->first() && $product->images->first()->image_path !== 'products/placeholder-orange.jpg')
-                            <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" 
-                                 alt="{{ $product->name }}" 
-                                 class="w-full h-48 object-cover">
-                        @else
-                            <div class="w-full h-48 bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center text-7xl">🍊</div>
-                        @endif
-                        
-                        <div class="p-4">
-                            <h3 class="font-bold mb-1 line-clamp-2">{{ $product->name }}</h3>
-                            <p class="text-xs text-neutral-500 mb-2">{{ $product->category->name }}</p>
-                            
                             @if($product->reviewsCount() > 0)
                                 <div class="flex items-center mb-2">
                                     @for($i = 1; $i <= 5; $i++)
