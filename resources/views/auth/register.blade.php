@@ -4,7 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar - JerukPin</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    @if(app()->environment('local'))
+        {{-- Local development: use Vite --}}
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @else
+        {{-- Production: use Tailwind CDN --}}
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: {
+                                50: '#f0fdf4',
+                                100: '#dcfce7',
+                                200: '#bbf7d0',
+                                300: '#86efac',
+                                400: '#4ade80',
+                                500: '#10b981',
+                                600: '#059669',
+                                700: '#047857',
+                                800: '#065f46',
+                                900: '#064e3b',
+                            },
+                            secondary: {
+                                500: '#3b82f6',
+                                600: '#2563eb',
+                                700: '#1d4ed8',
+                            },
+                            neutral: {
+                                100: '#f5f5f5',
+                                300: '#d4d4d4',
+                                500: '#737373',
+                                600: '#525252',
+                                700: '#404040',
+                                900: '#171717',
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
+    @endif
 </head>
 <body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
     <div class="w-full max-w-md">
