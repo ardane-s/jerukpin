@@ -1,0 +1,504 @@
+@extends('layouts.app')
+
+@section('title', 'Flash Sale - Diskon Spesial')
+
+@section('content')
+<!-- Hero Section -->
+<div class="bg-gradient-to-r from-orange-500 via-red-500 to-orange-600 text-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-5xl font-heading font-bold mb-4">🔥 FLASH SALE</h1>
+        <p class="text-xl text-orange-100">Diskon Spesial - Buruan Sebelum Kehabisan!</p>
+    </div>
+</div>
+
+<!-- Flash Sale Sessions -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    @if($activeSession || $upcomingSessions->count() > 0)
+        
+        <!-- ACTIVE SESSION -->
+        @if($activeSession)
+        <div class="mb-12">
+            <!-- Session Header with Countdown -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div>
+                        <h2 class="text-3xl font-bold text-orange-600 mb-2">🔥 FLASH SALE AKTIF</h2>
+                        <p class="text-neutral-600">{{ $activeSession['sales']->count() }} produk tersedia</p>
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                        <p class="text-sm text-neutral-600 mb-2 text-center">Berakhir dalam:</p>
+                        <div class="flex gap-2 text-center countdown-timer" data-end-time="{{ $activeSession['end_time'] }}">
+                            <div class="bg-orange-500 text-white rounded px-4 py-3">
+                                <div class="text-3xl font-bold countdown-hours">00</div>
+                                <div class="text-xs">Jam</div>
+                            </div>
+                            <div class="text-3xl font-bold">:</div>
+                            <div class="bg-orange-500 text-white rounded px-4 py-3">
+                                <div class="text-3xl font-bold countdown-minutes">00</div>
+                                <div class="text-xs">Menit</div>
+                            </div>
+                            <div class="text-3xl font-bold">:</div>
+                            <div class="bg-orange-500 text-white rounded px-4 py-3">
+                                <div class="text-3xl font-bold countdown-seconds">00</div>
+                                <div class="text-xs">Detik</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products with Arrow Navigation -->
+            <div class="relative group">
+                <!-- Left Arrow -->
+                <button onclick="scrollProducts('active', 'left')" class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                    <svg class="w-6 h-6 text-neutral-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+                
+                <!-- Products Scroll Container -->
+                <div id="active-products" class="overflow-x-auto scrollbar-hide scroll-smooth">
+                    <div class="flex gap-4 pb-4" style="min-width: min-content;">
+                        @foreach($activeSession['sales'] as $sale)
+                        <a href="{{ route('product.show', $sale->productVariant->product->slug) }}" 
+                           class="flex-shrink-0 w-64 bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition transform hover:scale-105">
+                            @if($sale->productVariant->product->images->first() && $sale->productVariant->product->images->first()->image_path !== 'products/placeholder-orange.jpg')
+                                <img src="{{ asset('storage/' . $sale->productVariant->product->images->first()->image_path) }}" 
+                                     alt="{{ $sale->productVariant->product->name }}" 
+                                     class="w-full h-48 object-cover">
+                            @else
+                                <div class="w-full h-48 bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center text-7xl">🍊</div>
+                            @endif
+                            <div class="p-4">
+                                <div class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded inline-block mb-2">
+                                    -{{ $sale->discount_percentage }}%
+                                </div>
+                                <h3 class="font-bold text-sm mb-1 line-clamp-2">{{ $sale->productVariant->product->name }}</h3>
+                                <p class="text-xs text-neutral-500 mb-2">{{ $sale->productVariant->variant_name }}</p>
+                                <div class="mb-1">
+                                    <span class="text-xs line-through text-neutral-400">Rp {{ number_format($sale->original_price, 0, ',', '.') }}</span>
+                                </div>
+                                <div class="text-lg font-bold text-orange-600 mb-2">Rp {{ number_format($sale->flash_price, 0, ',', '.') }}</div>
+                                
+                                <!-- Stock Progress -->
+                                <div class="bg-neutral-100 rounded-full h-2 mb-1">
+                                    <div class="bg-orange-500 h-2 rounded-full" 
+                                         style="width: {{ ($sale->flash_sold / $sale->flash_stock) * 100 }}%"></div>
+                                </div>
+                                <p class="text-xs text-neutral-500">Tersisa {{ $sale->flash_stock - $sale->flash_sold }}</p>
+                            </div>
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
+                
+                <!-- Right Arrow -->
+                <button onclick="scrollProducts('active', 'right')" class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                    <svg class="w-6 h-6 text-neutral-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        @endif
+
+        <!-- UPCOMING SESSION -->
+        @if($upcomingSessions->count() > 0)
+        @php $session = $upcomingSessions->first(); @endphp
+        <div class="mb-12">
+            <!-- Session Header -->
+            <div class="bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 mb-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="text-white">
+                        <h2 class="text-3xl font-bold mb-2">⏰ FLASH SALE BERIKUTNYA</h2>
+                        <p class="text-purple-100">{{ $session['sales']->count() }} produk - Segera Dimulai!</p>
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                        <p class="text-sm text-white mb-2 text-center">Dimulai dalam:</p>
+                        <div class="flex gap-2 text-center countdown-timer-start" data-start-time="{{ $session['start_time'] }}">
+                            <div class="bg-white text-purple-600 rounded px-4 py-3">
+                                <div class="text-3xl font-bold countdown-hours">00</div>
+                                <div class="text-xs">Jam</div>
+                            </div>
+                            <div class="text-3xl font-bold text-white">:</div>
+                            <div class="bg-white text-purple-600 rounded px-4 py-3">
+                                <div class="text-3xl font-bold countdown-minutes">00</div>
+                                <div class="text-xs">Menit</div>
+                            </div>
+                            <div class="text-3xl font-bold text-white">:</div>
+                            <div class="bg-white text-purple-600 rounded px-4 py-3">
+                                <div class="text-3xl font-bold countdown-seconds">00</div>
+                                <div class="text-xs">Detik</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mystery Products with Arrow Navigation -->
+            <div class="relative group">
+                <!-- Left Arrow -->
+                <button onclick="scrollProducts('upcoming', 'left')" class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                    <svg class="w-6 h-6 text-neutral-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+                
+                <!-- Products Scroll Container -->
+                <div id="upcoming-products" class="overflow-x-auto scrollbar-hide scroll-smooth">
+                    <div class="flex gap-4 pb-4" style="min-width: min-content;">
+                        @foreach($session['sales'] as $sale)
+                        <div class="flex-shrink-0 w-64 bg-white rounded-lg shadow-lg overflow-hidden relative">
+                            <div class="relative">
+                                @if($sale->productVariant->product->images->first() && $sale->productVariant->product->images->first()->image_path !== 'products/placeholder-orange.jpg')
+                                    <img src="{{ asset('storage/' . $sale->productVariant->product->images->first()->image_path) }}" 
+                                         alt="Mystery Product" 
+                                         class="w-full h-48 object-cover filter blur-lg">
+                                @else
+                                    <div class="w-full h-48 bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center text-7xl filter blur-lg">🍊</div>
+                                @endif
+                                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                    <div class="text-center text-white">
+                                        <div class="text-4xl mb-2">🎁</div>
+                                        <p class="font-bold">COMING SOON</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="bg-purple-500 text-white text-xs font-bold px-2 py-1 rounded inline-block mb-2">
+                                    SEGERA HADIR
+                                </div>
+                                <h3 class="font-bold text-sm mb-1 filter blur-sm">{{ substr($sale->productVariant->product->name, 0, 10) }}...</h3>
+                                <p class="text-xs text-neutral-500 mb-2 filter blur-sm">Varian Rahasia</p>
+                                <div class="text-lg font-bold text-purple-600 mb-2">??? Rp</div>
+                                <p class="text-xs text-neutral-500">Diskon hingga {{ $sale->discount_percentage }}%!</p>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                
+                <!-- Right Arrow -->
+                <button onclick="scrollProducts('upcoming', 'right')" class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                    <svg class="w-6 h-6 text-neutral-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        @endif
+
+    @else
+        <div class="text-center py-16">
+            <div class="text-6xl mb-4">🔥</div>
+            <h2 class="text-2xl font-bold text-neutral-900 mb-2">Belum Ada Flash Sale Aktif</h2>
+            <p class="text-neutral-600 mb-6">Pantau terus untuk mendapatkan penawaran terbaik!</p>
+            <a href="{{ route('products.index') }}" class="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg font-bold inline-block">
+                Lihat Semua Produk
+            </a>
+        </div>
+    @endif
+</div>
+
+<style>
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+</style>
+
+<script>
+// Scroll Products Function
+function scrollProducts(section, direction) {
+    const container = document.getElementById(section + '-products');
+    const scrollAmount = 280; // card width + gap
+    
+    if (direction === 'left') {
+        container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+                        <p class="text-neutral-600">{{ $activeSession['sales']->count() }} produk tersedia</p>
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                        <p class="text-sm text-neutral-600 mb-2 text-center">Berakhir dalam:</p>
+                        <div class="flex gap-2 text-center countdown-timer" data-end-time="{{ $activeSession['end_time'] }}">
+                            <div class="bg-orange-500 text-white rounded px-4 py-3">
+                                <div class="text-3xl font-bold countdown-hours">00</div>
+                                <div class="text-xs">Jam</div>
+                            </div>
+                            <div class="text-3xl font-bold">:</div>
+                            <div class="bg-orange-500 text-white rounded px-4 py-3">
+                                <div class="text-3xl font-bold countdown-minutes">00</div>
+                                <div class="text-xs">Menit</div>
+                            </div>
+                            <div class="text-3xl font-bold">:</div>
+                            <div class="bg-orange-500 text-white rounded px-4 py-3">
+                                <div class="text-3xl font-bold countdown-seconds">00</div>
+                                <div class="text-xs">Detik</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products with Arrow Navigation -->
+            <div class="relative group">
+                <!-- Left Arrow -->
+                <button onclick="scrollProducts('active', 'left')" class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                    <svg class="w-6 h-6 text-neutral-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+                
+                <!-- Products Scroll Container -->
+                <div id="active-products" class="overflow-x-auto scrollbar-hide scroll-smooth">
+                    <div class="flex gap-4 pb-4" style="min-width: min-content;">
+                        @foreach($activeSession['sales'] as $sale)
+                        <a href="{{ route('product.show', $sale->productVariant->product->slug) }}" 
+                           class="flex-shrink-0 w-64 bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition transform hover:scale-105">
+                            @if($sale->productVariant->product->images->first() && $sale->productVariant->product->images->first()->image_path !== 'products/placeholder-orange.jpg')
+                                <img src="{{ asset('storage/' . $sale->productVariant->product->images->first()->image_path) }}" 
+                                     alt="{{ $sale->productVariant->product->name }}" 
+                                     class="w-full h-48 object-cover">
+                            @else
+                                <div class="w-full h-48 bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center text-7xl">🍊</div>
+                            @endif
+                            <div class="p-4">
+                                <div class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded inline-block mb-2">
+                                    -{{ $sale->discount_percentage }}%
+                                </div>
+                                <h3 class="font-bold text-sm mb-1 line-clamp-2">{{ $sale->productVariant->product->name }}</h3>
+                                <p class="text-xs text-neutral-500 mb-2">{{ $sale->productVariant->variant_name }}</p>
+                                <div class="mb-1">
+                                    <span class="text-xs line-through text-neutral-400">Rp {{ number_format($sale->original_price, 0, ',', '.') }}</span>
+                                </div>
+                                <div class="text-lg font-bold text-orange-600 mb-2">Rp {{ number_format($sale->flash_price, 0, ',', '.') }}</div>
+                                
+                                <!-- Stock Progress -->
+                                <div class="bg-neutral-100 rounded-full h-2 mb-1">
+                                    <div class="bg-orange-500 h-2 rounded-full" 
+                                         style="width: {{ ($sale->flash_sold / $sale->flash_stock) * 100 }}%"></div>
+                                </div>
+                                <p class="text-xs text-neutral-500">Tersisa {{ $sale->flash_stock - $sale->flash_sold }}</p>
+                            </div>
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
+                
+                <!-- Right Arrow -->
+                <button onclick="scrollProducts('active', 'right')" class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                    <svg class="w-6 h-6 text-neutral-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        @endif
+
+        <!-- UPCOMING SESSION -->
+        @if($upcomingSessions->count() > 0)
+        @php $session = $upcomingSessions->first(); @endphp
+        <div class="mb-12">
+            <!-- Session Header -->
+            <div class="bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 mb-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="text-white">
+                        <h2 class="text-3xl font-bold mb-2">⏰ FLASH SALE BERIKUTNYA</h2>
+                        <p class="text-purple-100">{{ $session['sales']->count() }} produk - Segera Dimulai!</p>
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                        <p class="text-sm text-white mb-2 text-center">Dimulai dalam:</p>
+                        <div class="flex gap-2 text-center countdown-timer-start" data-start-time="{{ $session['start_time'] }}">
+                            <div class="bg-white text-purple-600 rounded px-4 py-3">
+                                <div class="text-3xl font-bold countdown-hours">00</div>
+                                <div class="text-xs">Jam</div>
+                            </div>
+                            <div class="text-3xl font-bold text-white">:</div>
+                            <div class="bg-white text-purple-600 rounded px-4 py-3">
+                                <div class="text-3xl font-bold countdown-minutes">00</div>
+                                <div class="text-xs">Menit</div>
+                            </div>
+                            <div class="text-3xl font-bold text-white">:</div>
+                            <div class="bg-white text-purple-600 rounded px-4 py-3">
+                                <div class="text-3xl font-bold countdown-seconds">00</div>
+                                <div class="text-xs">Detik</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mystery Products with Arrow Navigation -->
+            <div class="relative group">
+                <!-- Left Arrow -->
+                <button onclick="scrollProducts('upcoming', 'left')" class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                    <svg class="w-6 h-6 text-neutral-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+                
+                <!-- Products Scroll Container -->
+                <div id="upcoming-products" class="overflow-x-auto scrollbar-hide scroll-smooth">
+                    <div class="flex gap-4 pb-4" style="min-width: min-content;">
+                        @foreach($session['sales'] as $sale)
+                        <div class="flex-shrink-0 w-64 bg-white rounded-lg shadow-lg overflow-hidden relative">
+                            <div class="relative">
+                                @if($sale->productVariant->product->images->first() && $sale->productVariant->product->images->first()->image_path !== 'products/placeholder-orange.jpg')
+                                    <img src="{{ asset('storage/' . $sale->productVariant->product->images->first()->image_path) }}" 
+                                         alt="Mystery Product" 
+                                         class="w-full h-48 object-cover filter blur-lg">
+                                @else
+                                    <div class="w-full h-48 bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center text-7xl filter blur-lg">🍊</div>
+                                @endif
+                                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                    <div class="text-center text-white">
+                                        <div class="text-4xl mb-2">🎁</div>
+                                        <p class="font-bold">COMING SOON</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="bg-purple-500 text-white text-xs font-bold px-2 py-1 rounded inline-block mb-2">
+                                    SEGERA HADIR
+                                </div>
+                                <h3 class="font-bold text-sm mb-1 filter blur-sm">{{ substr($sale->productVariant->product->name, 0, 10) }}...</h3>
+                                <p class="text-xs text-neutral-500 mb-2 filter blur-sm">Varian Rahasia</p>
+                                <div class="text-lg font-bold text-purple-600 mb-2">??? Rp</div>
+                                <p class="text-xs text-neutral-500">Diskon hingga {{ $sale->discount_percentage }}%!</p>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                
+                <!-- Right Arrow -->
+                <button onclick="scrollProducts('upcoming', 'right')" class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                    <svg class="w-6 h-6 text-neutral-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        @endif
+
+    @else
+        <div class="text-center py-16">
+            <div class="text-6xl mb-4">🔥</div>
+            <h2 class="text-2xl font-bold text-neutral-900 mb-2">Belum Ada Flash Sale Aktif</h2>
+            <p class="text-neutral-600 mb-6">Pantau terus untuk mendapatkan penawaran terbaik!</p>
+            <a href="{{ route('products.index') }}" class="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg font-bold inline-block">
+                Lihat Semua Produk
+            </a>
+        </div>
+    @endif
+</div>
+
+<style>
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+</style>
+
+<script>
+// Scroll Products Function
+function scrollProducts(section, direction) {
+    const container = document.getElementById(section + '-products');
+    const scrollAmount = 280; // card width + gap
+    
+    if (direction === 'left') {
+        container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    } else {
+        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Countdown Timer for Active Flash Sale with Fade Transition
+    const countdownTimers = document.querySelectorAll('.countdown-timer');
+    countdownTimers.forEach(timer => {
+        const endTime = new Date(timer.dataset.endTime).getTime();
+        
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = endTime - now;
+            
+            if (distance < 0) {
+                // Fade out the active session
+                const activeSection = timer.closest('.mb-12');
+                if (activeSection) {
+                    activeSection.style.transition = 'opacity 1s ease-out, transform 1s ease-out';
+                    activeSection.style.opacity = '0';
+                    activeSection.style.transform = 'translateY(-20px)';
+                    
+                    // Wait for fade out, then reload
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    location.reload();
+                }
+                return;
+            }
+            
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            timer.querySelector('.countdown-hours').textContent = String(hours).padStart(2, '0');
+            timer.querySelector('.countdown-minutes').textContent = String(minutes).padStart(2, '0');
+            timer.querySelector('.countdown-seconds').textContent = String(seconds).padStart(2, '0');
+        }
+        
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    });
+
+    // Countdown Timer for Upcoming Flash Sale with Fade Transition
+    const countdownTimersStart = document.querySelectorAll('.countdown-timer-start');
+    countdownTimersStart.forEach(timer => {
+        const startTime = new Date(timer.dataset.startTime).getTime();
+        
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = startTime - now;
+            
+            if (distance < 0) {
+                // Fade out the upcoming session
+                const upcomingSection = timer.closest('.mb-12');
+                if (upcomingSection) {
+                    upcomingSection.style.transition = 'opacity 1s ease-out, transform 1s ease-out';
+                    upcomingSection.style.opacity = '0';
+                    upcomingSection.style.transform = 'translateY(-20px)';
+                    
+                    // Wait for fade out, then reload
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    location.reload();
+                }
+                return;
+            }
+            
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            timer.querySelector('.countdown-hours').textContent = String(hours).padStart(2, '0');
+            timer.querySelector('.countdown-minutes').textContent = String(minutes).padStart(2, '0');
+            timer.querySelector('.countdown-seconds').textContent = String(seconds).padStart(2, '0');
+        }
+        
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    });
+});
+</script>
+@endsection
