@@ -94,11 +94,25 @@
                         
                         <div class="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden group border border-neutral-200" style="width: 250px; flex-shrink: 0;">
                             <!-- Product Image -->
-                            <div class="relative overflow-hidden aspect-square">
+                            <div class="relative overflow-hidden aspect-square" id="product-card-{{ $sale->id }}">
                                 @if($image && $image->image_path !== 'products/placeholder-orange.jpg')
                                     <img src="{{ asset('storage/' . $image->image_path) }}" 
                                          alt="{{ $product->name }}" 
-                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                         onerror="this.style.display='none'; document.getElementById('placeholder-{{ $sale->id }}').style.display='flex';">
+                                    <!-- Orange Placeholder (hidden by default, shown on error) -->
+                                    <div id="placeholder-{{ $sale->id }}" class="w-full h-full bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200 flex items-center justify-center" style="display: none;">
+                                        <svg class="w-24 h-24 text-orange-500 opacity-60" fill="currentColor" viewBox="0 0 24 24">
+                                            <circle cx="12" cy="12" r="10" fill="url(#orangeGradient{{ $sale->id }})"/>
+                                            <ellipse cx="12" cy="8" rx="2" ry="3" fill="#4ade80" transform="rotate(-20 12 8)"/>
+                                            <defs>
+                                                <radialGradient id="orangeGradient{{ $sale->id }}">
+                                                    <stop offset="0%" stop-color="#fb923c"/>
+                                                    <stop offset="100%" stop-color="#f97316"/>
+                                                </radialGradient>
+                                            </defs>
+                                        </svg>
+                                    </div>
                                 @else
                                     <!-- Orange Placeholder -->
                                     <div class="w-full h-full bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200 flex items-center justify-center">
