@@ -58,101 +58,109 @@
             </div>
         </div>
 
-        <!-- ACTIVE CAMPAIGN PRODUCTS -->
+        <!-- ACTIVE CAMPAIGN PRODUCTS - HORIZONTAL SCROLL -->
         <div class="mb-12">
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                @foreach($activeCampaign->flashSales as $sale)
-                    @php
-                        $product = $sale->productVariant->product;
-                        $variant = $sale->productVariant;
-                        $image = $product->images->first();
-                    @endphp
-                    
-                    <div class="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden group border border-neutral-200">
-                        <!-- Product Image -->
-                        <div class="relative overflow-hidden bg-neutral-100 aspect-square">
-                            @if($image)
-                                <img src="{{ asset('storage/' . $image->image_path) }}" 
-                                     alt="{{ $product->name }}" 
-                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                            @else
-                                <div class="w-full h-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center">
-                                    <svg class="w-20 h-20 text-white opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                                    </svg>
-                                </div>
-                            @endif
-                            
-                            <!-- Discount Badge -->
-                            <div class="absolute top-2 left-2">
-                                <span class="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
-                                    -{{ $sale->discount_percentage }}%
-                                </span>
-                            </div>
-                            
-                            <!-- Stock Badge -->
-                            @if($sale->remaining_stock < 10)
-                                <div class="absolute top-2 right-2">
-                                    <span class="bg-orange-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
-                                        Sisa {{ $sale->remaining_stock }}
-                                    </span>
-                                </div>
-                            @endif
-                        </div>
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-2xl font-bold text-neutral-800">Produk Flash Sale</h3>
+                <span class="text-sm text-neutral-500">Geser untuk melihat lebih banyak →</span>
+            </div>
+            
+            <div class="overflow-x-auto pb-4 -mx-4 px-4">
+                <div class="flex gap-4" style="width: max-content;">
+                    @foreach($activeCampaign->flashSales as $sale)
+                        @php
+                            $product = $sale->productVariant->product;
+                            $variant = $sale->productVariant;
+                            $image = $product->images->first();
+                        @endphp
                         
-                        <!-- Product Info -->
-                        <div class="p-4">
-                            <h3 class="font-semibold text-neutral-900 text-sm mb-2 line-clamp-2 min-h-[2.5rem]">
-                                {{ $product->name }}
-                            </h3>
-                            <p class="text-xs text-neutral-500 mb-2">{{ $variant->variant_name }}</p>
-                            
-                            <!-- Prices -->
-                            <div class="mb-3">
-                                <div class="flex items-center gap-2 mb-1">
-                                    <span class="text-lg font-bold text-orange-600">
-                                        Rp {{ number_format($sale->flash_price, 0, ',', '.') }}
+                        <div class="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden group border border-neutral-200" style="width: 250px; flex-shrink: 0;">
+                            <!-- Product Image -->
+                            <div class="relative overflow-hidden bg-neutral-100 aspect-square">
+                                @if($image)
+                                    <img src="{{ asset('storage/' . $image->image_path) }}" 
+                                         alt="{{ $product->name }}" 
+                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                                @else
+                                    <!-- Orange Placeholder -->
+                                    <div class="w-full h-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center">
+                                        <svg class="w-20 h-20 text-white opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                        </svg>
+                                    </div>
+                                @endif
+                                
+                                <!-- Discount Badge -->
+                                <div class="absolute top-2 left-2">
+                                    <span class="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+                                        -{{ $sale->discount_percentage }}%
                                     </span>
                                 </div>
-                                <span class="text-xs text-neutral-400 line-through">
-                                    Rp {{ number_format($sale->original_price, 0, ',', '.') }}
-                                </span>
+                                
+                                <!-- Stock Badge -->
+                                @if($sale->remaining_stock < 10)
+                                    <div class="absolute top-2 right-2">
+                                        <span class="bg-orange-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+                                            Sisa {{ $sale->remaining_stock }}
+                                        </span>
+                                    </div>
+                                @endif
                             </div>
                             
-                            <!-- Progress Bar -->
-                            @if($sale->flash_stock > 0)
+                            <!-- Product Info -->
+                            <div class="p-4">
+                                <h3 class="font-semibold text-neutral-900 text-sm mb-2 line-clamp-2 min-h-[2.5rem]">
+                                    {{ $product->name }}
+                                </h3>
+                                <p class="text-xs text-neutral-500 mb-2">{{ $variant->variant_name }}</p>
+                                
+                                <!-- Prices -->
                                 <div class="mb-3">
-                                    <div class="flex justify-between text-xs text-neutral-600 mb-1">
-                                        <span>Terjual</span>
-                                        <span>{{ $sale->flash_sold }}/{{ $sale->flash_stock }}</span>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="text-lg font-bold text-orange-600">
+                                            Rp {{ number_format($sale->flash_price, 0, ',', '.') }}
+                                        </span>
                                     </div>
-                                    <div class="w-full bg-neutral-200 rounded-full h-2">
-                                        <div class="bg-orange-600 h-2 rounded-full transition-all" 
-                                             style="width: {{ ($sale->flash_sold / $sale->flash_stock) * 100 }}%"></div>
-                                    </div>
+                                    <span class="text-xs text-neutral-400 line-through">
+                                        Rp {{ number_format($sale->original_price, 0, ',', '.') }}
+                                    </span>
                                 </div>
-                            @endif
-                            
-                            <!-- Add to Cart Button -->
-                            @if($sale->remaining_stock > 0)
-                                <form action="{{ route('cart.add') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="product_variant_id" value="{{ $variant->id }}">
-                                    <input type="hidden" name="quantity" value="1">
-                                    <button type="submit" 
-                                            class="w-full bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold py-2.5 rounded-lg transition-colors shadow-md hover:shadow-lg">
-                                        + Keranjang
+                                
+                                <!-- Progress Bar -->
+                                @if($sale->flash_stock > 0)
+                                    <div class="mb-3">
+                                        <div class="flex justify-between text-xs text-neutral-600 mb-1">
+                                            <span>Terjual</span>
+                                            <span>{{ $sale->flash_sold }}/{{ $sale->flash_stock }}</span>
+                                        </div>
+                                        <div class="w-full bg-neutral-200 rounded-full h-2">
+                                            <div class="bg-orange-600 h-2 rounded-full transition-all" 
+                                                 style="width: {{ ($sale->flash_sold / $sale->flash_stock) * 100 }}%"></div>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <!-- Add to Cart Button -->
+                                @if($sale->remaining_stock > 0)
+                                    <form action="{{ route('cart.add') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="product_variant_id" value="{{ $variant->id }}">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" 
+                                                class="w-full bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold py-2.5 rounded-lg transition-colors shadow-md hover:shadow-lg">
+                                            + Keranjang
+                                        </button>
+                                    </form>
+                                @else
+                                    <button disabled 
+                                            class="w-full bg-neutral-300 text-neutral-500 text-sm font-semibold py-2.5 rounded-lg cursor-not-allowed">
+                                        Habis
                                     </button>
-                                </form>
-                            @else
-                                <button disabled 
-                                        class="w-full bg-neutral-300 text-neutral-500 text-sm font-semibold py-2.5 rounded-lg cursor-not-allowed">
-                                    Habis
-                                </button>
-                            @endif
+                                @endif
+                            </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
         </div>
         @endif
@@ -199,6 +207,60 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- UPCOMING CAMPAIGN PRODUCTS - MYSTERY CARDS - HORIZONTAL SCROLL -->
+        <div class="mb-12">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-2xl font-bold text-neutral-800">Produk yang Akan Datang</h3>
+                <span class="text-sm text-neutral-500">Geser untuk melihat lebih banyak →</span>
+            </div>
+            
+            <div class="overflow-x-auto pb-4 -mx-4 px-4">
+                <div class="flex gap-4" style="width: max-content;">
+                    @foreach($upcomingCampaign->flashSales as $sale)
+                        <div class="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden group border border-blue-200" style="width: 250px; flex-shrink: 0;">
+                            <!-- Mystery Image -->
+                            <div class="relative overflow-hidden bg-gradient-to-br from-blue-100 to-indigo-100 aspect-square">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="text-center">
+                                        <svg class="w-24 h-24 text-blue-400 mx-auto mb-3 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                        </svg>
+                                        <p class="text-blue-600 font-bold text-lg">Produk Rahasia</p>
+                                        <p class="text-blue-400 text-xs mt-1">Segera Dibuka!</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Mystery Badge -->
+                                <div class="absolute top-2 left-2">
+                                    <span class="bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+                                        Diskon {{ $sale->discount_percentage }}%
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Mystery Info -->
+                            <div class="p-4">
+                                <h3 class="font-semibold text-neutral-900 text-sm mb-2 min-h-[2.5rem] flex items-center">
+                                    <span class="text-blue-600">??? Produk Spesial ???</span>
+                                </h3>
+                                <p class="text-xs text-neutral-500 mb-3">Tunggu flash sale dimulai!</p>
+                                
+                                <!-- Notify Me Button -->
+                                <button type="button" 
+                                        onclick="notifyMe({{ $upcomingCampaign->id }})"
+                                        class="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2.5 rounded-lg transition-colors shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                                    </svg>
+                                    Ingatkan Saya
+                                </button>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -258,5 +320,40 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize all countdown timers
     document.querySelectorAll('.countdown-timer').forEach(updateCountdown);
 });
+
+// Notify Me Function
+function notifyMe(campaignId) {
+    // Check if user is logged in
+    @auth
+        // Store notification preference
+        fetch('/api/flash-sale-notify', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                campaign_id: campaignId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('✅ Anda akan diingatkan saat flash sale dimulai!');
+            } else {
+                alert('❌ Terjadi kesalahan. Silakan coba lagi.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('❌ Terjadi kesalahan. Silakan coba lagi.');
+        });
+    @else
+        // Redirect to login
+        if (confirm('Anda harus login terlebih dahulu. Login sekarang?')) {
+            window.location.href = '{{ route('login') }}';
+        }
+    @endauth
+}
 </script>
 @endsection
