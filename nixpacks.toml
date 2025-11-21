@@ -8,4 +8,4 @@ cmds = ["composer install --optimize-autoloader --no-dev", "npm ci"]
 cmds = ["npm run build"]
 
 [start]
-cmd = "php artisan migrate --force && php artisan storage:link && php artisan serve --host=0.0.0.0 --port=$PORT"
+cmd = "php artisan migrate --force && php artisan storage:link && php -S 0.0.0.0:$PORT -t public"
