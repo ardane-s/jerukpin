@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class FlashSale extends Model
 {
     protected $fillable = [
+        'campaign_id',
         'product_variant_id',
         'original_price',
         'flash_price',
@@ -28,6 +29,11 @@ class FlashSale extends Model
     ];
     
     // Relationships
+    public function campaign()
+    {
+        return $this->belongsTo(FlashSaleCampaign::class, 'campaign_id');
+    }
+
     public function productVariant()
     {
         return $this->belongsTo(ProductVariant::class);

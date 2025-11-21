@@ -89,9 +89,22 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::put('products/variants/{variant}', [AdminProductController::class, 'updateVariant'])->name('products.variants.update');
     Route::delete('products/variants/{variant}', [AdminProductController::class, 'deleteVariant'])->name('products.variants.delete');
     
-    // Flash Sales
+    
+    // Flash Sale Campaigns (New System)
+    Route::get('flash-sale-campaigns', [App\Http\Controllers\Admin\FlashSaleCampaignController::class, 'index'])->name('flash-sale-campaigns.index');
+    Route::get('flash-sale-campaigns/create', [App\Http\Controllers\Admin\FlashSaleCampaignController::class, 'create'])->name('flash-sale-campaigns.create');
+    Route::post('flash-sale-campaigns', [App\Http\Controllers\Admin\FlashSaleCampaignController::class, 'store'])->name('flash-sale-campaigns.store');
+    Route::get('flash-sale-campaigns/{campaign}/edit', [App\Http\Controllers\Admin\FlashSaleCampaignController::class, 'edit'])->name('flash-sale-campaigns.edit');
+    Route::put('flash-sale-campaigns/{campaign}', [App\Http\Controllers\Admin\FlashSaleCampaignController::class, 'update'])->name('flash-sale-campaigns.update');
+    Route::delete('flash-sale-campaigns/{campaign}', [App\Http\Controllers\Admin\FlashSaleCampaignController::class, 'destroy'])->name('flash-sale-campaigns.destroy');
+    Route::get('flash-sale-campaigns/{campaign}/products', [App\Http\Controllers\Admin\FlashSaleCampaignController::class, 'products'])->name('flash-sale-campaigns.products');
+    Route::post('flash-sale-campaigns/{campaign}/products', [App\Http\Controllers\Admin\FlashSaleCampaignController::class, 'addProduct'])->name('flash-sale-campaigns.add-product');
+    Route::delete('flash-sale-campaigns/{campaign}/products/{flashSale}', [App\Http\Controllers\Admin\FlashSaleCampaignController::class, 'removeProduct'])->name('flash-sale-campaigns.remove-product');
+    
+    // Flash Sales (Old System - Keep for backward compatibility)
     Route::resource('flash-sales', AdminFlashSaleController::class);
     Route::post('flash-sales/{flashSale}/deactivate', [AdminFlashSaleController::class, 'deactivate'])->name('flash-sales.deactivate');
+
     
     // Orders
     Route::get('orders', [AdminOrderController::class, 'index'])->name('orders.index');

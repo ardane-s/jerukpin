@@ -48,7 +48,8 @@
                     <span class="font-medium">Produk</span>
                 </a>
                 
-                <a href="{{ route('admin.flash-sales.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ request()->routeIs('admin.flash-sales.*') ? 'bg-orange-800/50 shadow-lg' : 'hover:bg-orange-700/30' }}">
+                
+                <a href="{{ route('admin.flash-sale-campaigns.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ request()->routeIs('admin.flash-sale-campaigns.*') || request()->routeIs('admin.flash-sales.*') ? 'bg-orange-800/50 shadow-lg' : 'hover:bg-orange-700/30' }}">
                     <span class="text-2xl">⚡</span>
                     <span class="font-medium">Flash Sale</span>
                 </a>
