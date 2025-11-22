@@ -201,7 +201,7 @@
                                     $categories = \App\Models\Category::orderBy('name')->get();
                                 @endphp
                                 @forelse($categories as $category)
-                                    <a href="{{ route('products.index', ['category' => $category->slug]) }}" class="group flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-gradient-to-r hover:from-orange-50 hover:to-orange-100 transition-all duration-200 border-l-4 border-transparent hover:border-orange-500">
+                                    <a href="{{ route('category.show', $category->slug) }}" class="group flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-gradient-to-r hover:from-orange-50 hover:to-orange-100 transition-all duration-200 border-l-4 border-transparent hover:border-orange-500">
                                         <span class="text-2xl group-hover:scale-110 transition-transform">🍊</span>
                                         <span class="font-medium group-hover:text-orange-600">{{ $category->name }}</span>
                                         <svg class="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -631,7 +631,7 @@
                                             $categories = \App\Models\Category::orderBy('name')->get();
                                         @endphp
                                         @forelse($categories as $category)
-                                            <a href="{{ route('products.index', ['category' => $category->slug]) }}" class="block px-8 py-2.5 text-sm text-neutral-600 hover:bg-orange-100 hover:text-orange-700 transition-colors">
+                                            <a href="{{ route('category.show', $category->slug) }}" class="block px-8 py-2.5 text-sm text-neutral-600 hover:bg-orange-100 hover:text-orange-700 transition-colors">
                                                 {{ $category->name }}
                                             </a>
                                         @empty
