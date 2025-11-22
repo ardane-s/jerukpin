@@ -185,6 +185,9 @@
                     <div class="relative kategori-dropdown-container">
                         <button class="nav-link font-medium transition hover:opacity-80 px-3 py-2 rounded flex items-center gap-1">
                             <span>Kategori</span>
+                            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
                         </button>
                         <div class="kategori-dropdown absolute left-0 mt-4 w-64 bg-white rounded-xl shadow-2xl border-2 border-orange-100 overflow-hidden z-50 opacity-0 invisible transform scale-95 origin-top-left transition-all duration-300">
                             <!-- Dropdown Header -->
@@ -214,12 +217,14 @@
                         <button class="nav-link font-medium transition hover:opacity-80 px-3 py-2 rounded flex items-center gap-1 relative">
                             <span>Promo</span>
                             @if($hasActiveFlashSales ?? false)
-                                <!-- Animated notification dot - aggressive animation -->
                                 <span class="absolute -top-1 -right-1 flex h-2.5 w-2.5">
                                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-90" style="animation-duration: 0.75s;"></span>
                                     <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-600 shadow-lg shadow-red-500/50"></span>
                                 </span>
                             @endif
+                            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
                         </button>
                         <div class="promo-dropdown absolute left-0 mt-4 w-64 bg-white rounded-xl shadow-2xl border-2 border-red-100 overflow-hidden z-50 opacity-0 invisible transform scale-95 origin-top-left transition-all duration-300">
                             <!-- Dropdown Header -->
@@ -558,22 +563,34 @@
                             </div>
                         </button>
                         
-                        <!-- Mobile Menu Dropdown (Full Navigation) -->
-                        <div id="menu-dropdown" class="absolute right-0 mt-4 w-72 sm:w-80 bg-white rounded-lg shadow-xl border border-neutral-200 py-2 z-50 opacity-0 invisible transform scale-95 origin-top-right transition-all duration-300 max-h-[80vh] overflow-y-auto">
-                            <!-- Main Navigation Links (Mobile Only) -->
-                            <div class="md:hidden border-b border-neutral-200 pb-2 mb-2">
-                                <a href="{{ route('home') }}" class="block px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
-                                    <span class="flex items-center gap-3">
-                                        <span class="text-xl">🏠</span>
-                                        <span>Beranda</span>
-                                    </span>
-                                </a>
+                        <!-- Mobile Menu Dropdown (Redesigned) -->
+                        <div id="menu-dropdown" class="absolute right-0 mt-4 w-80 bg-white rounded-2xl shadow-2xl border-2 border-orange-100 z-50 opacity-0 invisible transform scale-95 origin-top-right transition-all duration-300 max-h-[85vh] overflow-y-auto">
                             
-                            <!-- Cart Link in Hamburger -->
-                            <a href="{{ route('cart.index') }}" class="block px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
-                                <span class="flex items-center gap-3">
-                                    <span class="text-xl">🛒</span>
-                                    <span>Keranjang</span>
+                            <!-- Navigation Section -->
+                            <div class="p-2">
+                                <div class="px-3 py-2 mb-1">
+                                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider">Navigasi</span>
+                                </div>
+                                
+                                <a href="{{ route('home') }}" class="flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-gradient-to-r hover:from-orange-50 hover:to-orange-100 rounded-lg transition-all border-b border-neutral-100">
+                                    <div class="w-8 h-8 flex items-center justify-center bg-orange-100 rounded-lg">
+                                        <span class="text-lg">🏠</span>
+                                    </div>
+                                    <span class="font-medium flex-1">Beranda</span>
+                                </a>
+                                
+                                <a href="{{ route('products.index') }}" class="flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-gradient-to-r hover:from-orange-50 hover:to-orange-100 rounded-lg transition-all border-b border-neutral-100">
+                                    <div class="w-8 h-8 flex items-center justify-center bg-orange-100 rounded-lg">
+                                        <span class="text-lg">🍊</span>
+                                    </div>
+                                    <span class="font-medium flex-1">Semua Produk</span>
+                                </a>
+                                
+                                <a href="{{ route('cart.index') }}" class="flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-gradient-to-r hover:from-orange-50 hover:to-orange-100 rounded-lg transition-all">
+                                    <div class="w-8 h-8 flex items-center justify-center bg-orange-100 rounded-lg">
+                                        <span class="text-lg">🛒</span>
+                                    </div>
+                                    <span class="font-medium flex-1">Keranjang</span>
                                     @auth
                                         @php
                                             $cart = auth()->user()->cart;
@@ -581,7 +598,7 @@
                                             $cartCount = $cartItems->sum('quantity');
                                         @endphp
                                         @if($cartCount > 0)
-                                            <span class="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-0.5 font-bold">{{ $cartCount }}</span>
+                                            <span class="bg-red-500 text-white text-xs rounded-full px-2 py-0.5 font-bold">{{ $cartCount }}</span>
                                         @endif
                                     @else
                                         @php
@@ -589,90 +606,100 @@
                                             $guestCartCount = array_sum(array_column($sessionCart, 'quantity'));
                                         @endphp
                                         @if($guestCartCount > 0)
-                                            <span class="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-0.5 font-bold">{{ $guestCartCount }}</span>
+                                            <span class="bg-red-500 text-white text-xs rounded-full px-2 py-0.5 font-bold">{{ $guestCartCount }}</span>
                                         @endif
                                     @endauth
-                                </span>
-                            </a>
-                            
-                                <a href="{{ route('products.index') }}" class="block px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
-                                    <span class="flex items-center gap-3">
-                                        <span class="text-xl">🍊</span>
-                                        <span>Produk</span>
-                                    </span>
                                 </a>
+                            </div>
+                            
+                            <!-- Kategori & Promo Section -->
+                            <div class="p-2 bg-neutral-50">
+                                <div class="px-3 py-2 mb-1">
+                                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider">Kategori & Promo</span>
+                                </div>
                                 
-                                {{-- Kategori Expandable --}}
-                                <div class="mobile-kategori-section">
-                                    <button id="mobile-kategori-toggle" class="w-full px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-orange-50 hover:text-orange-600 transition-colors flex items-center gap-2">
-                                        <span class="text-xl flex-shrink-0">📂</span>
-                                        <span class="flex-1 text-left">Kategori</span>
-                                        <svg id="mobile-kategori-arrow" class="w-4 h-4 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <!-- Kategori Expandable -->
+                                <div class="mb-2">
+                                    <button id="mobile-kategori-toggle" class="w-full flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-white rounded-lg transition-all">
+                                        <div class="w-8 h-8 flex items-center justify-center bg-orange-100 rounded-lg">
+                                            <span class="text-lg">📂</span>
+                                        </div>
+                                        <span class="font-medium flex-1 text-left">Kategori</span>
+                                        <svg id="mobile-kategori-arrow" class="w-5 h-5 transition-transform text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                         </svg>
                                     </button>
-                                    <div id="mobile-kategori-list" class="hidden bg-neutral-50 border-l-4 border-orange-500">
+                                    <div id="mobile-kategori-list" class="hidden mt-1 ml-12 space-y-1">
                                         @php
                                             $categories = \App\Models\Category::orderBy('name')->get();
                                         @endphp
                                         @forelse($categories as $category)
-                                            <a href="{{ route('category.show', $category->slug) }}" class="block px-8 py-2.5 text-sm text-neutral-600 hover:bg-orange-100 hover:text-orange-700 transition-colors">
+                                            <a href="{{ route('category.show', $category->slug) }}" class="block px-4 py-2 text-sm text-neutral-600 hover:text-orange-600 hover:bg-orange-50 rounded-md transition border-l-2 border-transparent hover:border-orange-500">
                                                 {{ $category->name }}
                                             </a>
                                         @empty
-                                            <div class="px-8 py-2.5 text-sm text-neutral-500">Belum ada kategori</div>
+                                            <div class="px-4 py-2 text-sm text-neutral-500">Belum ada kategori</div>
                                         @endforelse
                                     </div>
                                 </div>
                                 
-                                {{-- Promo Expandable --}}
-                                <div class="mobile-promo-section">
-                                    <button id="mobile-promo-toggle" class="w-full px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-orange-50 hover:text-orange-600 transition-colors flex items-center gap-2">
-                                        <span class="text-xl flex-shrink-0">🎁</span>
-                                        <span class="flex-1 text-left">Promo</span>
-                                        <svg id="mobile-promo-arrow" class="w-4 h-4 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <!-- Promo Expandable -->
+                                <div>
+                                    <button id="mobile-promo-toggle" class="w-full flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-white rounded-lg transition-all">
+                                        <div class="w-8 h-8 flex items-center justify-center bg-red-100 rounded-lg">
+                                            <span class="text-lg">🎁</span>
+                                        </div>
+                                        <span class="font-medium flex-1 text-left">Promo</span>
+                                        <svg id="mobile-promo-arrow" class="w-5 h-5 transition-transform text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                         </svg>
                                     </button>
-                                    <div id="mobile-promo-list" class="hidden bg-neutral-50 border-l-4 border-red-500">
-                                        <a href="{{ route('flash-sales.index') }}" class="block px-8 py-2.5 text-sm text-neutral-600 hover:bg-red-50 hover:text-red-700 transition-colors">
+                                    <div id="mobile-promo-list" class="hidden mt-1 ml-12 space-y-1">
+                                        <a href="{{ route('flash-sales.index') }}" class="block px-4 py-2 text-sm text-neutral-600 hover:text-red-600 hover:bg-red-50 rounded-md transition border-l-2 border-transparent hover:border-red-500">
                                             🔥 Flash Sale
                                         </a>
-                                        <a href="{{ route('bundle-deals') }}" class="block px-8 py-2.5 text-sm text-neutral-600 hover:bg-orange-50 hover:text-orange-700 transition-colors">
+                                        <a href="{{ route('bundle-deals') }}" class="block px-4 py-2 text-sm text-neutral-600 hover:text-orange-600 hover:bg-orange-50 rounded-md transition border-l-2 border-transparent hover:border-orange-500">
                                             🎁 Bundle Deals
                                         </a>
-                                        <a href="{{ route('special-discounts') }}" class="block px-8 py-2.5 text-sm text-neutral-600 hover:bg-yellow-50 hover:text-yellow-700 transition-colors">
+                                        <a href="{{ route('special-discounts') }}" class="block px-4 py-2 text-sm text-neutral-600 hover:text-yellow-600 hover:bg-yellow-50 rounded-md transition border-l-2 border-transparent hover:border-yellow-500">
                                             🏷️ Diskon Spesial
                                         </a>
                                     </div>
                                 </div>
                             </div>
                             
-                            {{-- Utility Links - Consistent styling with main navigation --}}
-                            <div class="border-t border-neutral-200">
-                                <a href="{{ route('orders.track') }}" class="block px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
-                                    <span class="flex items-center gap-3">
-                                        <span class="text-xl">📦</span>
-                                        <span>Lacak Pesanan</span>
-                                    </span>
+                            <!-- Informasi Section -->
+                            <div class="p-2 border-t-2 border-neutral-100">
+                                <div class="px-3 py-2 mb-1">
+                                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider">Informasi</span>
+                                </div>
+                                
+                                <a href="{{ route('orders.track') }}" class="flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 rounded-lg transition-all border-b border-neutral-100">
+                                    <div class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-lg">
+                                        <span class="text-lg">📦</span>
+                                    </div>
+                                    <span class="font-medium">Lacak Pesanan</span>
                                 </a>
-                                <a href="{{ route('contact') }}" class="block px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
-                                    <span class="flex items-center gap-3">
-                                        <span class="text-xl">📞</span>
-                                        <span>Kontak Kami</span>
-                                    </span>
+                                
+                                <a href="{{ route('contact') }}" class="flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-gradient-to-r hover:from-green-50 hover:to-green-100 rounded-lg transition-all border-b border-neutral-100">
+                                    <div class="w-8 h-8 flex items-center justify-center bg-green-100 rounded-lg">
+                                        <span class="text-lg">📞</span>
+                                    </div>
+                                    <span class="font-medium">Kontak Kami</span>
                                 </a>
-                                <a href="{{ route('about') }}" class="block px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
-                                    <span class="flex items-center gap-3">
-                                        <span class="text-xl">ℹ️</span>
-                                        <span>Tentang Kami</span>
-                                    </span>
+                                
+                                <a href="{{ route('about') }}" class="flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-purple-100 rounded-lg transition-all border-b border-neutral-100">
+                                    <div class="w-8 h-8 flex items-center justify-center bg-purple-100 rounded-lg">
+                                        <span class="text-lg">ℹ️</span>
+                                    </div>
+                                    <span class="font-medium">Tentang Kami</span>
                                 </a>
-                                <a href="{{ route('faq') }}" class="block px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
-                                    <span class="flex items-center gap-3">
-                                        <span class="text-xl">❓</span>
-                                        <span>FAQ</span>
-                                    </span>
+                                
+                                <a href="{{ route('faq') }}" class="flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-gradient-to-r hover:from-yellow-50 hover:to-yellow-100 rounded-lg transition-all">
+                                    <div class="w-8 h-8 flex items-center justify-center bg-yellow-100 rounded-lg">
+                                        <span class="text-lg">❓</span>
+                                    </div>
+                                    <span class="font-medium">FAQ</span>
                                 </a>
                             </div>
                         </div>
