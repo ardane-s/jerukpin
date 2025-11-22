@@ -9,10 +9,15 @@ class PaymentMethod extends Model
 {
     use HasFactory;
 
+    const TYPE_BANK_TRANSFER = 'bank_transfer';
+    const TYPE_E_WALLET = 'e_wallet';
+    const TYPE_COD = 'cod';
+
     protected $fillable = [
-        'bank_name',
-        'account_number',
-        'account_holder',
+        'type',
+        'method_name',
+        'account_info',
+        'account_name',
         'is_active',
         'sort_order',
     ];
@@ -34,6 +39,19 @@ class PaymentMethod extends Model
      */
     public function scopeOrdered($query)
     {
-        return $query->orderBy('sort_order', 'asc')->orderBy('bank_name', 'asc');
+        return $query->orderBy('sort_order', 'asc')->orderBy('method_name', 'asc');
+    }
+
+    /**
+     * Get payment type label
+     */
+    public function getTypeLabel()
+    {
+        return match($this->type) {
+            self::TYPE_BANK_TRANSFER => 'Transfer Bank',
+            self::TYPE_E_WALLET => 'E-Wallet / QRIS',
+            self::TYPE_COD => 'Bayar di Tempat (COD)',
+            default => 'Lainnya'
+        };
     }
 }

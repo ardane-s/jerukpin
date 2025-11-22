@@ -22,9 +22,10 @@ class PaymentMethodController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'bank_name' => 'required|string|max:255',
-            'account_number' => 'required|string|max:255',
-            'account_holder' => 'required|string|max:255',
+            'type' => 'required|in:bank_transfer,e_wallet,cod',
+            'method_name' => 'required|string|max:255',
+            'account_info' => 'nullable|string|max:255',
+            'account_name' => 'nullable|string|max:255',
             'is_active' => 'boolean',
         ]);
 
@@ -32,9 +33,10 @@ class PaymentMethodController extends Controller
         $maxSort = PaymentMethod::max('sort_order') ?? 0;
 
         PaymentMethod::create([
-            'bank_name' => $request->bank_name,
-            'account_number' => $request->account_number,
-            'account_holder' => $request->account_holder,
+            'type' => $request->type,
+            'method_name' => $request->method_name,
+            'account_info' => $request->account_info,
+            'account_name' => $request->account_name,
             'is_active' => $request->has('is_active'),
             'sort_order' => $maxSort + 1,
         ]);
@@ -51,16 +53,18 @@ class PaymentMethodController extends Controller
     public function update(Request $request, PaymentMethod $paymentMethod)
     {
         $request->validate([
-            'bank_name' => 'required|string|max:255',
-            'account_number' => 'required|string|max:255',
-            'account_holder' => 'required|string|max:255',
+            'type' => 'required|in:bank_transfer,e_wallet,cod',
+            'method_name' => 'required|string|max:255',
+            'account_info' => 'nullable|string|max:255',
+            'account_name' => 'nullable|string|max:255',
             'is_active' => 'boolean',
         ]);
 
         $paymentMethod->update([
-            'bank_name' => $request->bank_name,
-            'account_number' => $request->account_number,
-            'account_holder' => $request->account_holder,
+            'type' => $request->type,
+            'method_name' => $request->method_name,
+            'account_info' => $request->account_info,
+            'account_name' => $request->account_name,
             'is_active' => $request->has('is_active'),
         ]);
 

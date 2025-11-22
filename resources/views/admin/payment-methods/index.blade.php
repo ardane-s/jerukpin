@@ -22,8 +22,9 @@
             <table class="min-w-full divide-y divide-neutral-200">
                 <thead class="bg-neutral-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Bank</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">No. Rekening</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Tipe</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Nama</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Info Akun</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Atas Nama</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Status</th>
                         <th class="px-6 py-3 text-right text-xs font-medium text-neutral-500 uppercase tracking-wider">Aksi</th>
@@ -33,13 +34,21 @@
                     @foreach($paymentMethods as $method)
                         <tr class="hover:bg-neutral-50 transition">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-bold text-neutral-900">{{ $method->bank_name }}</div>
+                                <span class="text-xs px-2 py-1 rounded-full font-bold
+                                    {{ $method->type === 'bank_transfer' ? 'bg-blue-100 text-blue-800' : '' }}
+                                    {{ $method->type === 'e_wallet' ? 'bg-purple-100 text-purple-800' : '' }}
+                                    {{ $method->type === 'cod' ? 'bg-green-100 text-green-800' : '' }}">
+                                    {{ $method->getTypeLabel() }}
+                                </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-neutral-600">{{ $method->account_number }}</div>
+                                <div class="text-sm font-bold text-neutral-900">{{ $method->method_name }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-neutral-600">{{ $method->account_holder }}</div>
+                                <div class="text-sm text-neutral-600">{{ $method->account_info ?? '-' }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-neutral-600">{{ $method->account_name ?? '-' }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <form action="{{ route('admin.payment-methods.toggle', $method) }}" method="POST" class="inline">
