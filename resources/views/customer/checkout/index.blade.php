@@ -61,7 +61,7 @@
                             </div>
                             <div class="mb-4">
                                 <label class="block text-sm font-medium mb-2">No. Telepon *</label>
-                                <input type="text" name="phone" value="{{ old('phone') }}" class="w-full px-4 py-2 border border-neutral-300 rounded-lg">
+                                <input type="text" name="phone" value="{{ old('phone', auth()->user()->phone) }}" class="w-full px-4 py-2 border border-neutral-300 rounded-lg">
                             </div>
                         </div>
                     @else

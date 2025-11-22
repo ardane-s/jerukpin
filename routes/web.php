@@ -214,8 +214,8 @@ Route::get('/payment/callback', [App\Http\Controllers\PaymentController::class, 
 Route::post('/payment/notification', [App\Http\Controllers\PaymentController::class, 'notification'])->name('payment.notification');
 
 
-// Admin Routes (Protected by auth + super_admin middleware)
-Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+// Admin Routes (Protected by auth + admin middleware - SUPER ADMIN ONLY!)
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     // Dashboard
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
     
