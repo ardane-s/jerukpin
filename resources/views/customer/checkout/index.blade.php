@@ -145,12 +145,12 @@
                     <div class="border-t pt-4 mb-6">
                         <div class="flex justify-between text-lg font-bold">
                             <span>Total</span>
-                            <span class="text-primary-600">Rp {{ number_format($total + 10000, 0, ',', '.') }}</span>
+                            <span class="text-orange-600">Rp {{ number_format($total + 10000, 0, ',', '.') }}</span>
                         </div>
                     </div>
                     
-                    <button type="submit" class="w-full bg-primary-500 hover:bg-primary-600 text-white py-3 rounded-lg font-bold">
-                        Buat Pesanan
+                    <button type="submit" class="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white py-3 rounded-lg font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                        🛒 Buat Pesanan
                     </button>
                 </div>
             </div>
