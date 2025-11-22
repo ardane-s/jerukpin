@@ -229,13 +229,11 @@ class RealJerukPinSeeder extends Seeder
         Setting::create([
             'key' => 'shipping_cost',
             'value' => '10000',
-            'type' => 'integer',
         ]);
 
         Setting::create([
             'key' => 'free_shipping_threshold',
             'value' => '50000',
-            'type' => 'integer',
         ]);
     }
 }
