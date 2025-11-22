@@ -56,7 +56,7 @@ class ProfileController extends Controller
         // Update other fields
         $user->fill($request->validated());
 
-        if ($user->isDDirty('email')) {
+        if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
 
