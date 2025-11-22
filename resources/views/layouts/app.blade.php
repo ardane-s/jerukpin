@@ -198,7 +198,7 @@
                                     $categories = \App\Models\Category::orderBy('name')->get();
                                 @endphp
                                 @forelse($categories as $category)
-                                    <a href="{{ route('category.show', $category->slug) }}" class="group flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-gradient-to-r hover:from-orange-50 hover:to-orange-100 transition-all duration-200 border-l-4 border-transparent hover:border-orange-500">
+                                    <a href="{{ route('category.show', $category->slug) }}" class="group flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-gradient-to-r hover:from-orange-50 hover:to-orange-100 transition-all duration-200 border-l-4 border-transparent hover:border-orange-500 border-b border-neutral-100 last:border-b-0">
                                         <span class="text-2xl group-hover:scale-110 transition-transform">🍊</span>
                                         <span class="font-medium group-hover:text-orange-600">{{ $category->name }}</span>
                                     </a>
@@ -229,14 +229,14 @@
                             
                             <!-- Dropdown Items -->
                             <div class="py-2">
-                                <a href="{{ route('flash-sales.index') }}" class="group flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-orange-50 transition-all duration-200 border-l-4 border-transparent hover:border-red-500">
+                                <a href="{{ route('flash-sales.index') }}" class="group flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-orange-50 transition-all duration-200 border-l-4 border-transparent hover:border-red-500 border-b border-neutral-100">
                                     <span class="text-2xl group-hover:scale-110 transition-transform">🔥</span>
                                     <div class="flex-1">
                                         <span class="font-bold group-hover:text-red-600 block">Flash Sale</span>
                                         <span class="text-xs text-red-500">Diskon hingga 50%!</span>
                                     </div>
                                 </a>
-                                <a href="{{ route('bundle-deals') }}" class="group flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50 transition-all duration-200 border-l-4 border-transparent hover:border-orange-500">
+                                <a href="{{ route('bundle-deals') }}" class="group flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50 transition-all duration-200 border-l-4 border-transparent hover:border-orange-500 border-b border-neutral-100">
                                     <span class="text-2xl group-hover:scale-110 transition-transform">🎁</span>
                                     <span class="font-medium group-hover:text-orange-600">Bundle Deals</span>
                                 </a>
