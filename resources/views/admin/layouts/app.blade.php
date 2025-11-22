@@ -76,11 +76,11 @@
             <div class="p-4 border-t border-orange-500/30">
                 <div class="flex items-center gap-3 mb-3">
                     <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-orange-600 font-bold text-lg shadow-md">
-                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                        {{ auth()->user() ? strtoupper(substr(auth()->user()->name, 0, 1)) : 'A' }}
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="font-medium truncate">{{ auth()->user()->name }}</p>
-                        <p class="text-xs text-orange-200 truncate">{{ auth()->user()->email }}</p>
+                        <p class="font-medium truncate">{{ auth()->user()->name ?? 'Admin' }}</p>
+                        <p class="text-xs text-orange-200 truncate">{{ auth()->user()->email ?? 'admin@jerukpin.com' }}</p>
                     </div>
                 </div>
                 <form action="{{ route('logout') }}" method="POST">
