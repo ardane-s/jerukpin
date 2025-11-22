@@ -1,27 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'Profil Saya')
-
-@section('content')
-<div class="min-h-screen bg-neutral-50 py-12">
-    <div class="max-w-4xl mx-auto px-4">
-        <!-- Header -->
-        <div class="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-8 mb-8 text-white shadow-xl">
-            <div class="flex items-center gap-6">
-                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center text-orange-600 font-bold text-4xl shadow-lg">
-                    {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                </div>
-                <div class="flex-1">
-                    <h1 class="text-3xl font-bold mb-2">{{ auth()->user()->name }}</h1>
-                    <p class="opacity-90">{{ auth()->user()->email }}</p>
-                    <p class="text-sm opacity-80 mt-1">Bergabung sejak {{ auth()->user()->created_at->format('F Y') }}</p>
-                </div>
-                <a href="{{ route('profile.edit') }}" class="bg-white text-orange-600 px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition">
-                    Edit Profil
-                </a>
-            </div>
-        </div>
-
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="bg-white rounded-xl p-6 shadow-md">
