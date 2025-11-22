@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Admin - JerukPin')</title>
+    <!-- Tailwind CDN Fallback for immediate styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         body { margin: 0; font-family: system-ui, -apple-system, sans-serif; }
