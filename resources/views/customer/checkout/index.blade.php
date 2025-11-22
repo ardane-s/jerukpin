@@ -55,9 +55,15 @@
                         @endif
                         
                         <div id="new-address-fields" class="{{ $addresses->count() > 0 ? 'hidden' : '' }}">
+                            @php
+                                // Get the most recent address (from saved addresses or last order)
+                                $lastAddress = $addresses->first() 
+                                    ? $addresses->first()->full_address 
+                                    : auth()->user()->orders()->latest()->first()?->address?->full_address ?? '';
+                            @endphp
                             <div class="mb-4">
                                 <label class="block text-sm font-medium mb-2">Alamat Lengkap *</label>
-                                <textarea name="shipping_address" rows="3" class="w-full px-4 py-2 border border-neutral-300 rounded-lg">{{ old('shipping_address') }}</textarea>
+                                <textarea name="shipping_address" rows="3" class="w-full px-4 py-2 border border-neutral-300 rounded-lg">{{ old('shipping_address', $lastAddress) }}</textarea>
                             </div>
                             <div class="mb-4">
                                 <label class="block text-sm font-medium mb-2">No. Telepon *</label>
