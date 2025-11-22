@@ -187,11 +187,11 @@
                                                     <div class="text-sm text-neutral-400 line-through mb-1">
                                                         Rp {{ number_format($variant->price, 0, ',', '.') }}
                                                     </div>
-                                                    <div class="text-2xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+                                                    <div class="text-2xl font-bold text-red-600">
                                                         Rp {{ number_format($flashSale->flash_price, 0, ',', '.') }}
                                                     </div>
                                                 @else
-                                                    <div class="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+                                                    <div class="text-2xl font-bold text-green-700">
                                                         Rp {{ number_format($variant->price, 0, ',', '.') }}
                                                     </div>
                                                 @endif
