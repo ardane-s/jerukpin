@@ -3,10 +3,10 @@
 @section('title', $category->name . ' - JerukPin')
 
 @section('content')
-<div class="bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-12">
+<div class="relative bg-gradient-to-r from-orange-100 via-orange-50 to-orange-100 py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 class="text-4xl font-heading font-bold mb-2">{{ $category->name }}</h1>
-        <p class="text-primary-100">{{ $category->description }}</p>
+        <h1 class="text-4xl font-heading font-bold mb-2 text-gray-900" style="text-shadow: 1px 1px 2px rgba(255,255,255,0.3);">{{ $category->name }}</h1>
+        <p class="text-gray-700 font-medium">{{ $category->description }}</p>
     </div>
 </div>
 

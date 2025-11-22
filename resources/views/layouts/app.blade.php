@@ -297,8 +297,7 @@
                     @auth
                         @if(auth()->user()->role !== 'super_admin')
                             <!-- Cart Button with Hover Dropdown -->
-                            <!-- Cart Button - Hidden, moved to hamburger menu -->
-                            <div class="hidden">
+                            <div class="relative cart-dropdown-container">
                                 <a href="{{ route('cart.index') }}" class="flex items-center gap-2 px-3 py-2 border border-white/30 rounded-lg bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all duration-300 group">
                                     <span class="text-lg group-hover:scale-110 transition-transform duration-300">🛒</span>
                                     <span class="hidden sm:inline text-sm font-medium text-white">Keranjang</span>

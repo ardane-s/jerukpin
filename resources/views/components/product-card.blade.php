@@ -25,7 +25,7 @@
             <h3 class="font-bold mt-2 mb-1 text-sm sm:text-base text-neutral-800 group-hover:text-primary-600 transition-colors line-clamp-2">{{ $product->name }}</h3>
             <p class="text-xs text-neutral-500 mb-1 sm:mb-2">{{ $product->category->name }}</p>
             @if($product->variants->first())
-                <p class="text-sm sm:text-base md:text-lg font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">Mulai Rp {{ number_format($product->variants->min('price'), 0, ',', '.') }}</p>
+                <p class="text-sm sm:text-base md:text-lg font-bold text-green-700">Mulai Rp {{ number_format($product->variants->min('price'), 0, ',', '.') }}</p>
             @endif
             <div class="flex items-center justify-between mt-2">
                 <p class="text-xs text-neutral-500">📦 Terjual {{ $product->total_sold_count }}</p>

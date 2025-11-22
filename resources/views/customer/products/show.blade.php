@@ -228,14 +228,14 @@
                 <!-- Add to Cart Button -->
                 <div class="sticky bottom-0 bg-white pt-6 pb-4 -mx-4 px-4 border-t border-neutral-200 lg:static lg:border-0 lg:mx-0 lg:px-0">
                     <button type="submit" form="add-to-cart-form" 
-                            class="w-full group relative overflow-hidden bg-gradient-to-r from-primary-500 via-primary-600 to-secondary-500 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300">
+                            class="w-full group relative overflow-hidden bg-gradient-to-r from-orange-500 via-orange-600 to-orange-700 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-2xl transform hover:scale-[1.02] transition-all duration-300">
                         <span class="relative z-10 flex items-center justify-center gap-2">
                             <svg class="w-6 h-6 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                             </svg>
                             <span>Tambah ke Keranjang</span>
                         </span>
-                        <div class="absolute inset-0 bg-gradient-to-r from-secondary-500 to-primary-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute inset-0 bg-gradient-to-r from-orange-700 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </button>
                 </div>
             </div>

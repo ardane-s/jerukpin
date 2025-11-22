@@ -29,11 +29,11 @@ class RealJerukPinSeeder extends Seeder
 
         // Ensure admin exists
         User::firstOrCreate(
-            ['email' => 'admin@jerukpin.com'],
+            ['email' => 'jerukpin@gmail.com'],
             [
                 'name' => 'Admin JerukPin',
                 'phone' => '081234567890',
-                'password' => Hash::make('admin123'),
+                'password' => Hash::make('Jerukjerukjerukpin!'),
                 'role' => 'super_admin',
             ]
         );
