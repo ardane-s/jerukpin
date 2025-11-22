@@ -1382,42 +1382,74 @@
         });
     </script>
     
-    <!-- Page Loader Script -->
+    <!-- Page Loader Script - Improved & Faster -->
     <script>
-        // Show loader when clicking links
+        const loader = document.getElementById('pageLoader');
+        let loaderTimeout;
+        
+        // Function to show loader (faster - 200ms)
+        function showLoader() {
+            if (loader) {
+                clearTimeout(loaderTimeout);
+                loader.style.display = 'flex';
+                loader.style.opacity = '1';
+            }
+        }
+        
+        // Function to hide loader (faster)
+        function hideLoader() {
+            if (loader) {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    loader.style.opacity = '1';
+                }, 200); //  Faster transition
+            }
+        }
+        
+        // Show loader when clicking navigation links
         document.addEventListener('click', function(e) {
             const link = e.target.closest('a');
             if (link && link.href && !link.target && !link.href.startsWith('#') && !link.href.startsWith('javascript:')) {
-                const loader = document.getElementById('pageLoader');
-                if (loader) {
-                    loader.style.display = 'flex';
+                // Don't show loader for same-page hash links or javascript links
+                if (link.href !== window.location.href) {
+                    showLoader();
+                }
+            }
+        });
+        
+        // Show loader when submitting forms
+        document.addEventListener('submit', function(e) {
+            const form = e.target;
+            if (form && form.tagName === 'FORM') {
+                // Only show if it's not an AJAX form
+                if (!form.hasAttribute('data-ajax')) {
+                    showLoader();
                 }
             }
         });
         
         // Hide loader when page loads
         window.addEventListener('load', function() {
-            const loader = document.getElementById('pageLoader');
-            if (loader) {
-                loader.style.opacity = '0';
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                    loader.style.opacity = '1';
-                }, 500);
+            hideLoader();
+        });
+        
+        // IMPORTANT: Handle back/forward button navigation (prevents stuck loader)
+        window.addEventListener('pageshow', function(event) {
+            // If page was loaded from cache (back button)
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                hideLoader();
             }
         });
         
-        // Also hide loader if it's been showing for too long (fallback)
-        setTimeout(function() {
-            const loader = document.getElementById('pageLoader');
-            if (loader && loader.style.display !== 'none') {
-                loader.style.opacity = '0';
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                    loader.style.opacity = '1';
-                }, 500);
-            }
-        }, 3000);
-    </script>
+        // Fallback: Auto-hide loader after 2 seconds (reduced from 3)
+        window.addEventListener('DOMContentLoaded', function() {
+            loaderTimeout = setTimeout(function() {
+                if (loader && loader.style.display !== 'none') {
+                    hideLoader();
+                }
+            }, 2000);
+        });
+    </script>>
 </body>
 </html>
