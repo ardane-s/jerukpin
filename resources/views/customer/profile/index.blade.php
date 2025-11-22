@@ -1,5 +1,27 @@
 @extends('layouts.app')
 
+@section('title', 'Profil Saya')
+
+@section('content')
+<div class="min-h-screen bg-neutral-50 py-12">
+    <div class="max-w-4xl mx-auto px-4">
+        <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+            <!-- Profile Header -->
+            <div class="text-center mb-8">
+                <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-orange-200 shadow-lg mb-4">
+                    <img src="{{ (isset(auth()->user()->avatar) && auth()->user()->avatar) ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&color=fff&background=f97316&size=128' }}" 
+                         alt="{{ auth()->user()->name }}" 
+                         class="w-full h-full object-cover">
+                </div>
+                <h1 class="text-3xl font-bold text-neutral-900 mb-2">{{ auth()->user()->name }}</h1>
+                <p class="text-neutral-600">{{ auth()->user()->email }}</p>
+                <p class="text-sm text-neutral-500 mt-1">Bergabung sejak {{ auth()->user()->created_at->format('F Y') }}</p>
+                <a href="{{ route('profile.edit') }}" class="inline-block mt-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg transition">
+                    Edit Profil
+                </a>
+            </div>
+        </div>
+
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="bg-white rounded-xl p-6 shadow-md">
@@ -17,6 +39,30 @@
             <div class="bg-white rounded-xl p-6 shadow-md">
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <span class="text-2xl">✅</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-neutral-600">Selesai</p>
+                        <p class="text-2xl font-bold text-neutral-900">{{ auth()->user()->orders()->where('status', 'delivered')->count() }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl p-6 shadow-md">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <span class="text-2xl">⭐</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-neutral-600">Review Diberikan</p>
+                        <p class="text-2xl font-bold text-neutral-900">{{ auth()->user()->reviews()->count() }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <a href="{{ route('orders.index') }}" class="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition group">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-4">
