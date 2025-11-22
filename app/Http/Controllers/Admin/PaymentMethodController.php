@@ -26,8 +26,16 @@ class PaymentMethodController extends Controller
             'method_name' => 'required|string|max:255',
             'account_info' => 'nullable|string|max:255',
             'account_name' => 'nullable|string|max:255',
+            'qr_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'instructions' => 'nullable|string',
             'is_active' => 'boolean',
         ]);
+
+        // Handle QR image upload
+        $qrImagePath = null;
+        if ($request->hasFile('qr_image')) {
+            $qrImagePath = $request->file('qr_image')->store('payment_qr_codes', 'public');
+        }
 
         // Get highest sort order and add 1
         $maxSort = PaymentMethod::max('sort_order') ?? 0;
@@ -37,6 +45,8 @@ class PaymentMethodController extends Controller
             'method_name' => $request->method_name,
             'account_info' => $request->account_info,
             'account_name' => $request->account_name,
+            'qr_image' => $qrImagePath,
+            'instructions' => $request->instructions,
             'is_active' => $request->has('is_active'),
             'sort_order' => $maxSort + 1,
         ]);
@@ -57,14 +67,28 @@ class PaymentMethodController extends Controller
             'method_name' => 'required|string|max:255',
             'account_info' => 'nullable|string|max:255',
             'account_name' => 'nullable|string|max:255',
+            'qr_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'instructions' => 'nullable|string',
             'is_active' => 'boolean',
         ]);
+
+        // Handle QR image upload
+        $qrImagePath = $paymentMethod->qr_image;
+        if ($request->hasFile('qr_image')) {
+            // Delete old image if exists
+            if ($paymentMethod->qr_image) {
+                \Storage::disk('public')->delete($paymentMethod->qr_image);
+            }
+            $qrImagePath = $request->file('qr_image')->store('payment_qr_codes', 'public');
+        }
 
         $paymentMethod->update([
             'type' => $request->type,
             'method_name' => $request->method_name,
             'account_info' => $request->account_info,
             'account_name' => $request->account_name,
+            'qr_image' => $qrImagePath,
+            'instructions' => $request->instructions,
             'is_active' => $request->has('is_active'),
         ]);
 
