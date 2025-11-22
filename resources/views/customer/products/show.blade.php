@@ -159,43 +159,6 @@
                                             <div class="w-3 h-3 rounded-full bg-primary-500 scale-0 transition-transform duration-300"></div>
                                         </div>
                                         
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex-1">
-                                                <div class="flex items-center gap-3 mb-2">
-                                                    <h4 class="font-bold text-neutral-900">{{ $variant->variant_name }}</h4>
-                                                    @if($variant->hasActiveFlashSale())
-                                                        @php
-                                                            $flashSale = $variant->activeFlashSale();
-                                                        @endphp
-                                                        <span class="px-2 py-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold rounded-full animate-pulse">
-                                                            🔥 -{{ $flashSale->discount_percentage }}%
-                                                        </span>
-                                                    @endif
-                                                </div>
-                                                <div class="flex items-center gap-2">
-                                                    <span class="text-sm text-neutral-500">Stok:</span>
-                                                    <span class="text-sm font-semibold {{ $variant->stock > 10 ? 'text-green-600' : 'text-orange-600' }}">
-                                                        {{ $variant->stock }} tersedia
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="text-right">
-                                                @if($variant->hasActiveFlashSale())
-                                                    @php
-                                                        $flashSale = $variant->activeFlashSale();
-                                                    @endphp
-                                                    <div class="text-sm text-neutral-400 line-through mb-1">
-                                                        Rp {{ number_format($variant->price, 0, ',', '.') }}
-                                                    </div>
-                                                    <div class="text-2xl font-bold text-red-600">
-                                                        Rp {{ number_format($flashSale->flash_price, 0, ',', '.') }}
-                                                    </div>
-                                                @else
-                                                    <div class="text-2xl font-bold text-green-700">
-                                                        Rp {{ number_format($variant->price, 0, ',', '.') }}
-                                                    </div>
-                                                @endif
-                                            </div>
                                         </div>
                                     </div>
                                 </label>
