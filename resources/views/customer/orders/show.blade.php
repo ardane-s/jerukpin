@@ -75,64 +75,137 @@
                 @else
                     <div class="bg-gradient-to-r from-yellow-50 to-orange-50 border-t-4 border-yellow-400 px-6 py-5">
                         <div class="flex items-start gap-4">
-                            <div class="text-4xl">💳</div>
+                            <div class="text-4xl">
+                                @if($order->payment_method === 'bank_transfer')
+                                    💳
+                                @elseif($order->payment_method === 'e_wallet')
+                                    📱
+                                @else
+                                    💵
+                                @endif
+                            </div>
                             <div class="flex-1">
                                 <h3 class="font-bold text-yellow-900 text-lg mb-2">Informasi Pembayaran</h3>
-                                <p class="text-sm text-yellow-800 mb-4">Silakan pilih bank dan transfer ke rekening berikut:</p>
                                 
                                 @php
-                                    $paymentMethods = \App\Models\PaymentMethod::active()->ordered()->get();
+                                    $paymentMethods = \App\Models\PaymentMethod::active()->where('type', $order->payment_method)->ordered()->get();
                                 @endphp
                                 
-                                @if($paymentMethods->count() > 0)
-                                    <!-- Bank Selection -->
+                                @if($order->payment_method === 'cod')
+                                    {{-- COD Instructions --}}
+                                    <div class="bg-white rounded-xl p-4 shadow-md mb-4">
+                                        <p class="text-sm text-neutral-700 mb-3">
+                                            <strong>Bayar di Tempat (COD)</strong>
+                                        </p>
+                                        <p class="text-sm text-neutral-600">
+                                            Pesanan Anda akan dikirim. Silakan siapkan uang tunai sejumlah <strong class="text-orange-600">Rp {{ number_format($order->total, 0, ',', '.') }}</strong> saat barang tiba.
+                                        </p>
+                                        @if($paymentMethods->first() && $paymentMethods->first()->instructions)
+                                            <div class="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                                <p class="text-sm text-blue-800">ℹ️ {{ $paymentMethods->first()->instructions }}</p>
+                                            </div>
+                                        @endif
+                                    </div>
+                                @elseif($paymentMethods->count() > 0)
+                                    {{-- Bank Transfer or E-Wallet Instructions --}}
+                                    <p class="text-sm text-yellow-800 mb-4">
+                                        @if($order->payment_method === 'bank_transfer')
+                                            Silakan pilih bank dan transfer ke rekening berikut:
+                                        @else
+                                            Silakan pilih metode dan transfer ke akun berikut:
+                                        @endif
+                                    </p>
+                                    
+                                    {{-- Method Selection --}}
                                     <div class="bg-white rounded-xl p-4 shadow-md space-y-3 mb-4">
-                                        <label class="block text-sm font-bold text-neutral-700 mb-2">Pilih Bank Transfer:</label>
-                                        <select id="bankSelector" class="w-full px-4 py-3 border-2 border-orange-300 rounded-lg font-bold text-neutral-900 focus:border-orange-500">
+                                        <label class="block text-sm font-bold text-neutral-700 mb-2">
+                                            @if($order->payment_method === 'bank_transfer')
+                                                Pilih Bank Transfer:
+                                            @else
+                                                Pilih E-Wallet / QRIS:
+                                            @endif
+                                        </label>
+                                        <select id="paymentSelector" class="w-full px-4 py-3 border-2 border-orange-300 rounded-lg font-bold text-neutral-900 focus:border-orange-500">
                                             @foreach($paymentMethods as $index => $method)
-                                                <option value="{{ $index }}">{{ $method->bank_name }}</option>
+                                                <option value="{{ $index }}">{{ $method->method_name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     
-                                    <!-- Bank Details (Dynamic) -->
-                                    <div class="bg-white rounded-xl p-4 shadow-md space-y-2" id="bankDetails">
+                                    {{-- Payment Details (Dynamic) --}}
+                                    <div class="bg-white rounded-xl p-4 shadow-md space-y-2" id="paymentDetails">
                                         <div class="flex justify-between items-center">
-                                            <span class="text-neutral-600 font-medium">Bank:</span>
-                                            <span class="font-bold text-neutral-900" id="bankName">{{ $paymentMethods->first()->bank_name }}</span>
+                                            <span class="text-neutral-600 font-medium">
+                                                @if($order->payment_method === 'bank_transfer')
+                                                    Bank:
+                                                @else
+                                                    Metode:
+                                                @endif
+                                            </span>
+                                            <span class="font-bold text-neutral-900" id="methodName">{{ $paymentMethods->first()->method_name }}</span>
                                         </div>
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-neutral-600 font-medium">No. Rekening:</span>
-                                            <span class="font-bold text-neutral-900" id="accountNumber">{{ $paymentMethods->first()->account_number }}</span>
-                                        </div>
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-neutral-600 font-medium">Atas Nama:</span>
-                                            <span class="font-bold text-neutral-900" id="accountHolder">{{ $paymentMethods->first()->account_holder }}</span>
-                                        </div>
+                                        @if($paymentMethods->first()->account_info)
+                                            <div class="flex justify-between items-center">
+                                                <span class="text-neutral-600 font-medium">
+                                                    @if($order->payment_method === 'bank_transfer')
+                                                        No. Rekening:
+                                                    @else
+                                                        No. HP / ID:
+                                                    @endif
+                                                </span>
+                                                <span class="font-bold text-neutral-900" id="accountInfo">{{ $paymentMethods->first()->account_info }}</span>
+                                            </div>
+                                        @endif
+                                        @if($paymentMethods->first()->account_name)
+                                            <div class="flex justify-between items-center">
+                                                <span class="text-neutral-600 font-medium">Atas Nama:</span>
+                                                <span class="font-bold text-neutral-900" id="accountName">{{ $paymentMethods->first()->account_name }}</span>
+                                            </div>
+                                        @endif
                                         <div class="border-t-2 border-dashed border-neutral-200 pt-2 mt-2">
                                             <div class="flex justify-between items-center">
                                                 <span class="text-neutral-600 font-medium">Jumlah Transfer:</span>
                                                 <span class="text-2xl font-bold text-orange-600">Rp {{ number_format($order->total, 0, ',', '.') }}</span>
                                             </div>
                                         </div>
+                                        
+                                        {{-- Instructions if available --}}
+                                        <div id="paymentInstructions" class="mt-3">
+                                            @if($paymentMethods->first()->instructions)
+                                                <div class="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                                    <p class="text-sm text-blue-800">ℹ️ <span id="instructionsText">{{ $paymentMethods->first()->instructions }}</span></p>
+                                                </div>
+                                            @endif
+                                        </div>
                                     </div>
                                     
                                     <script>
-                                    const bankData = [
+                                    const paymentData = [
                                         @foreach($paymentMethods as $method)
                                             { 
-                                                name: '{{ $method->bank_name }}', 
-                                                account: '{{ $method->account_number }}',
-                                                holder: '{{ $method->account_holder }}'
+                                                name: '{{ $method->method_name }}', 
+                                                account: '{{ $method->account_info }}',
+                                                holder: '{{ $method->account_name }}',
+                                                instructions: {!! json_encode($method->instructions) !!}
                                             },
                                         @endforeach
                                     ];
                                     
-                                    document.getElementById('bankSelector').addEventListener('change', function() {
-                                        const bank = bankData[this.value];
-                                        document.getElementById('bankName').textContent = bank.name;
-                                        document.getElementById('accountNumber').textContent = bank.account;
-                                        document.getElementById('accountHolder').textContent = bank.holder;
+                                    document.getElementById('paymentSelector')?.addEventListener('change', function() {
+                                        const payment = paymentData[this.value];
+                                        document.getElementById('methodName').textContent = payment.name;
+                                        const accountInfoEl = document.getElementById('accountInfo');
+                                        const accountNameEl = document.getElementById('accountName');
+                                        if (accountInfoEl) accountInfoEl.textContent = payment.account || '-';
+                                        if (accountNameEl) accountNameEl.textContent = payment.holder || '-';
+                                        
+                                        const instructionsEl = document.getElementById('instructionsText');
+                                        if (instructionsEl && payment.instructions) {
+                                            instructionsEl.textContent = payment.instructions;
+                                            document.getElementById('paymentInstructions').style.display = 'block';
+                                        } else if (instructionsEl) {
+                                            document.getElementById('paymentInstructions').style.display = 'none';
+                                        }
                                     });
                                     </script>
                                 @else
@@ -141,6 +214,8 @@
                                         <p class="text-sm text-red-600">Silakan hubungi admin.</p>
                                     </div>
                                 @endif
+                                
+                                @if($order->payment_method !== 'cod')
                                 <div class="flex gap-3 mt-4">
                                     <a href="{{ route('orders.payment', $order->order_number) }}" 
                                        class="flex-1 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-3 rounded-lg font-bold text-center transition shadow-md hover:shadow-lg">
