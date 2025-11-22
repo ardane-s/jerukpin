@@ -1,28 +1,25 @@
-@extends('layouts.app')
-
-@section('title', $category->name . ' - JerukPin')
-
-@section('content')
-<div class="relative bg-gradient-to-r from-orange-100 via-orange-50 to-orange-100 py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 class="text-4xl font-heading font-bold mb-2 text-gray-900" style="text-shadow: 1px 1px 2px rgba(255,255,255,0.3);">{{ $category->name }}</h1>
-        <p class="text-gray-700 font-medium">{{ $category->description }}</p>
-    </div>
-</div>
-
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        @forelse($products as $product)
-            <x-product-card :product="$product" />
-        @empty
-            <div class="col-span-3 text-center py-12 text-neutral-500">
-                Belum ada produk dalam kategori ini.
+```
+        @if ($products->count())
+            <!-- Pagination -->
+            <div class="mt-12">
+                {{ $products->links() }}
             </div>
-        @endforelse
-    </div>
-
-    <div class="mt-8">
-        {{ $products->links() }}
+        @else
+            <!-- Empty State -->
+            <div class="text-center py-20">
+                <div class="inline-flex items-center justify-center w-32 h-32 bg-gradient-to-br from-orange-100 to-orange-200 rounded-full mb-6">
+                    <span class="text-6xl">🍊</span>
+                </div>
+                <h3 class="text-2xl font-bold text-neutral-900 mb-3">Belum Ada Produk</h3>
+                <p class="text-neutral-600 mb-8 max-w-md mx-auto">
+                    Saat ini belum ada produk dalam kategori ini. Silakan cek kategori lain atau kembali lagi nanti!
+                </p>
+                <a href="{{ route('products.index') }}" class="inline-block bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-3 rounded-lg font-semibold hover:shadow-xl transition-all transform hover:scale-105">
+                    Lihat Semua Produk
+                </a>
+            </div>
+        @endif
     </div>
 </div>
 @endsection
+```
