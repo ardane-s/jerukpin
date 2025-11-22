@@ -132,7 +132,7 @@
         /* Back to top button */
         #backToTop {
             position: fixed;
-            bottom: 30px;
+            bottom: 100px;
             right: 30px;
             background: linear-gradient(135deg, #FF8A00, #FF6B00);
             color: white;
