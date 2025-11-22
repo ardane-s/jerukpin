@@ -17,44 +17,35 @@ class ReviewController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'order_item_id' => 'required|exists:order_items,id',
             'product_id' => 'required|exists:products,id',
             'rating' => 'required|integer|min:1|max:5',
             'comment' => 'nullable|string|max:1000',
         ]);
 
-        // Verify that the user owns this order item
-        $orderItem = OrderItem::with('order')->findOrFail($request->order_item_id);
-        
-        if ($orderItem->order->user_id !== Auth::id()) {
-            return back()->with('error', 'Anda tidak memiliki akses untuk mereview produk ini.');
+        // Check if user is logged in
+        if (!Auth::check()) {
+            return back()->with('error', 'Anda harus login terlebih dahulu untuk memberikan ulasan.');
         }
 
-        // Check if order is completed
-        if ($orderItem->order->status !== 'delivered') {
-            return back()->with('error', 'Anda hanya dapat mereview produk setelah pesanan selesai.');
-        }
-
-        // Check if already reviewed
-        $existingReview = Review::where('order_item_id', $request->order_item_id)
+        // Check if already reviewed this product
+        $existingReview = Review::where('product_id', $request->product_id)
             ->where('user_id', Auth::id())
             ->first();
 
         if ($existingReview) {
-            return back()->with('error', 'Anda sudah mereview produk ini.');
+            return back()->with('error', 'Anda sudah pernah memberikan ulasan untuk produk ini.');
         }
 
         // Create review
         Review::create([
-            'order_item_id' => $request->order_item_id,
             'user_id' => Auth::id(),
             'product_id' => $request->product_id,
             'rating' => $request->rating,
             'comment' => $request->comment,
-            'is_approved' => false, // Needs admin approval
+            'is_approved' => true, // Auto-approve for now, can change to false later
         ]);
 
-        return back()->with('success', 'Review Anda telah dikirim dan menunggu persetujuan admin.');
+        return back()->with('success', 'Terima kasih! Ulasan Anda telah berhasil dikirim.');
     }
 
     /**
