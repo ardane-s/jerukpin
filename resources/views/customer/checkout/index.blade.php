@@ -6,6 +6,23 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <h1 class="text-3xl font-heading font-bold text-neutral-900 mb-6">Checkout</h1>
 
+    @if($errors->any())
+        <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r-lg">
+            <div class="flex">
+                <div class="ml-3">
+                    <h3 class="text-sm font-bold text-red-800">Ada masalah dengan pesanan Anda:</h3>
+                    <div class="mt-2 text-sm text-red-700">
+                        <ul class="list-disc list-inside space-y-1">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <form action="{{ route('checkout.store') }}" method="POST">
         @csrf
         
