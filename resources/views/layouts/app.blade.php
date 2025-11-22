@@ -154,6 +154,15 @@
         #backToTop.show {
             display: flex;
         }
+        
+        /* Hide scrollbar for horizontal scroll sections */
+        .scrollbar-hide {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;  /* Chrome, Safari, Opera */
+        }
     </style>
 </head>
 <body class="bg-neutral-100" style="min-height: 100vh; display: flex; flex-direction: column;">
