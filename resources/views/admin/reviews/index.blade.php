@@ -53,8 +53,8 @@
                                  alt="{{ $review->product->name }}" 
                                  class="w-12 h-12 rounded object-cover">
                         @else
-                            <div class="w-12 h-12 rounded bg-neutral-100 flex items-center justify-center">
-                                <span class="text-neutral-400 text-xs">No img</span>
+                            <div class="w-12 h-12 rounded bg-orange-50 flex items-center justify-center">
+                                <span class="text-2xl">🍊</span>
                             </div>
                         @endif
                         <div>
