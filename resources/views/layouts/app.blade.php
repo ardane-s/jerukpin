@@ -528,7 +528,7 @@
                         </div>
                     @endauth
                     @auth
-                        @if(auth()->user()->role === 'super_admin')
+                        @if(in_array(auth()->user()->role, ['admin', 'super_admin']))
                             <a href="{{ route('admin.dashboard') }}" class="text-sm rainbow-text hover:opacity-80 px-3 py-2">{{ auth()->user()->name }}</a>
                             <form action="{{ route('logout') }}" method="POST" class="inline">
                                 @csrf
