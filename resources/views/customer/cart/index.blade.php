@@ -48,10 +48,10 @@
                             <!-- Product Info -->
                             <div class="flex-1 flex flex-col justify-between">
                                 <div>
-                                    <h3 class="font-bold text-xl text-neutral-900 mb-1">{{ $item->productVariant->product->name }}</h3>
+                                    <h3 class="font-bold text-lg sm:text-xl text-neutral-900 mb-1">{{ $item->productVariant->product->name }}</h3>
                                     <p class="text-sm text-neutral-500 mb-2">📦 {{ $item->productVariant->variant_name }}</p>
                                     <p class="text-sm text-neutral-600 mb-1">{{ $item->quantity }}x @ Rp {{ number_format($item->price, 0, ',', '.') }}</p>
-                                    <p class="text-2xl font-bold text-orange-600">
+                                    <p class="text-xl sm:text-2xl font-bold text-orange-600">
                                         Rp {{ number_format($item->price * $item->quantity, 0, ',', '.') }}
                                     </p>
                                 </div>
@@ -122,7 +122,7 @@
             <!-- Order Summary Sidebar -->
             <div class="lg:col-span-1">
                 <div class="bg-white rounded-2xl shadow-lg border-2 border-orange-100 p-4 sm:p-6 lg:sticky lg:top-24">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 flex items-center gap-2">
                         📋 Ringkasan Pesanan
                     </h2>
                     
@@ -163,12 +163,12 @@
                     <div class="border-t-2 border-neutral-200 pt-4 mb-6">
                         <div class="flex justify-between items-center">
                             <span class="text-lg font-bold text-neutral-900">Total</span>
-                            <span class="text-3xl font-bold text-orange-600">Rp {{ number_format($total, 0, ',', '.') }}</span>
+                            <span class="text-2xl sm:text-3xl font-bold text-orange-600">Rp {{ number_format($total, 0, ',', '.') }}</span>
                         </div>
                     </div>
                     
                     <!-- Checkout Button -->
-                    <a href="{{ route('checkout.index') }}" class="block w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white text-center py-4 rounded-xl font-bold text-lg transition shadow-lg hover:shadow-xl">
+                    <a href="{{ route('checkout.index') }}" class="block w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white text-center py-3 sm:py-4 rounded-lg sm:rounded-xl font-bold text-base sm:text-lg transition shadow-lg hover:shadow-xl active:scale-95">
                         🚀 Lanjut ke Checkout
                     </a>
                     

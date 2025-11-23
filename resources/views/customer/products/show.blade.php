@@ -46,7 +46,7 @@
                         @endif
                     @else
                         <div class="aspect-square bg-gradient-to-br from-orange-100 via-orange-50 to-orange-100 flex items-center justify-center">
-                            <div class="text-9xl animate-bounce">🍊</div>
+                            <div class="text-6xl sm:text-9xl animate-bounce">🍊</div>
                         </div>
                     @endif
                     
@@ -68,7 +68,7 @@
                 
                 <!-- Thumbnail Gallery -->
                 @if($product->images->count() > 1)
-                    <div class="grid grid-cols-5 gap-3">
+                    <div class="grid grid-cols-4 sm:grid-cols-5 gap-2 sm:gap-3">
                         @foreach($product->images as $image)
                             <button onclick="document.getElementById('main-image').src = '{{ asset('storage/' . $image->image_path) }}'"
                                     class="aspect-square rounded-lg overflow-hidden border-2 transition-all duration-300 hover:border-primary-500 hover:shadow-md {{ $image->is_primary ? 'border-primary-500 ring-2 ring-primary-200' : 'border-neutral-200' }}">
@@ -94,7 +94,7 @@
                             {{ $product->category->name }}
                         </span>
                     </div>
-                    <h1 class="text-4xl font-heading font-bold text-neutral-900 mb-3">{{ $product->name }}</h1>
+                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-heading font-bold text-neutral-900 mb-3">{{ $product->name }}</h1>
                     
                     <!-- Rating & Reviews -->
                     @if($product->reviewsCount() > 0)
@@ -107,7 +107,7 @@
                                         </svg>
                                     @endfor
                                 </div>
-                                <span class="text-lg font-bold text-neutral-900">{{ number_format($product->averageRating(), 1) }}</span>
+                                <span class="text-base sm:text-lg font-bold text-neutral-900">{{ number_format($product->averageRating(), 1) }}</span>
                             </div>
                             <div class="h-6 w-px bg-neutral-300"></div>
                             <button onclick="switchTab('reviews')" class="text-primary-600 hover:text-primary-700 font-medium transition">
@@ -143,7 +143,7 @@
 
                 <!-- Variant Selection -->
                 <div>
-                    <h3 class="text-lg font-bold text-neutral-900 mb-4">Pilih Varian</h3>
+                    <h3 class="text-base sm:text-lg font-bold text-neutral-900 mb-3 sm:mb-4">Pilih Varian</h3>
                     <form action="{{ route('cart.add') }}" method="POST" id="add-to-cart-form">
                         @csrf
                         <input type="hidden" name="product_variant_id" id="selected-variant-id">
@@ -153,7 +153,7 @@
                             @foreach($product->variants as $variant)
                                 <label class="variant-option cursor-pointer" data-variant-id="{{ $variant->id }}">
                                     <input type="radio" name="variant" value="{{ $variant->id }}" class="hidden variant-radio" {{ $loop->first ? 'checked' : '' }}>
-                                    <div class="relative p-4 pl-12 border-2 border-neutral-200 rounded-xl transition-all duration-300 hover:border-primary-300 hover:shadow-md bg-white">
+                                    <div class="relative p-3 sm:p-4 pl-10 sm:pl-12 border-2 border-neutral-200 rounded-lg sm:rounded-xl transition-all duration-300 hover:border-primary-300 hover:shadow-md bg-white">
                                         <!-- Visible Radio Circle on LEFT -->
                                         <div class="absolute top-1/2 -translate-y-1/2 left-4 w-6 h-6 rounded-full border-2 border-neutral-400 flex items-center justify-center transition-all duration-300 selected-indicator bg-white">
                                             <div class="w-3 h-3 rounded-full bg-orange-600 scale-0 transition-transform duration-300"></div>
@@ -187,11 +187,11 @@
                                                     <div class="text-sm text-neutral-400 line-through mb-1">
                                                         Rp {{ number_format($variant->price, 0, ',', '.') }}
                                                     </div>
-                                                    <div class="text-2xl font-bold text-red-600">
+                                                    <div class="text-xl sm:text-2xl font-bold text-red-600">
                                                         Rp {{ number_format($flashSale->flash_price, 0, ',', '.') }}
                                                     </div>
                                                 @else
-                                                    <div class="text-2xl font-bold text-green-700">
+                                                    <div class="text-xl sm:text-2xl font-bold text-green-700">
                                                         Rp {{ number_format($variant->price, 0, ',', '.') }}
                                                     </div>
                                                 @endif
@@ -206,17 +206,17 @@
 
                 <!-- Quantity Selector -->
                 <div>
-                    <h3 class="text-lg font-bold text-neutral-900 mb-4">Jumlah</h3>
+                    <h3 class="text-base sm:text-lg font-bold text-neutral-900 mb-3 sm:mb-4">Jumlah</h3>
                     <div class="flex items-center gap-4">
                         <div class="flex items-center border-2 border-neutral-300 rounded-lg overflow-hidden">
-                            <button type="button" onclick="decreaseQuantity()" class="px-4 py-3 bg-neutral-100 hover:bg-neutral-200 transition-colors">
+                            <button type="button" onclick="decreaseQuantity()" class="px-3 sm:px-4 py-2 sm:py-3 bg-neutral-100 hover:bg-neutral-200 transition-colors active:bg-neutral-300">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
                                 </svg>
                             </button>
                             <input type="number" id="quantity-display" value="1" min="1" readonly
-                                   class="w-16 text-center font-bold text-lg border-none focus:outline-none">
-                            <button type="button" onclick="increaseQuantity()" class="px-4 py-3 bg-neutral-100 hover:bg-neutral-200 transition-colors">
+                                   class="w-12 sm:w-16 text-center font-bold text-base sm:text-lg border-none focus:outline-none">
+                            <button type="button" onclick="increaseQuantity()" class="px-3 sm:px-4 py-2 sm:py-3 bg-neutral-100 hover:bg-neutral-200 transition-colors active:bg-neutral-300">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                                 </svg>
@@ -228,7 +228,7 @@
                 <!-- Add to Cart Button -->
                 <div class="sticky bottom-0 bg-white pt-6 pb-4 -mx-4 px-4 border-t border-neutral-200 lg:static lg:border-0 lg:mx-0 lg:px-0">
                     <button type="submit" form="add-to-cart-form" 
-                            class="w-full group relative overflow-hidden bg-gradient-to-r from-orange-500 via-orange-600 to-orange-700 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-2xl transform hover:scale-[1.02] transition-all duration-300">
+                            class="w-full group relative overflow-hidden bg-gradient-to-r from-orange-500 via-orange-600 to-orange-700 text-white py-3 sm:py-4 rounded-lg sm:rounded-xl font-bold text-base sm:text-lg shadow-lg hover:shadow-2xl transform active:scale-95 sm:hover:scale-[1.02] transition-all duration-300">
                         <span class="relative z-10 flex items-center justify-center gap-2">
                             <svg class="w-6 h-6 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>

@@ -3,8 +3,8 @@
 @section('title', 'Checkout')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <h1 class="text-3xl font-heading font-bold text-neutral-900 mb-6">Checkout</h1>
+<div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-8">
+    <h1 class="text-2xl sm:text-3xl font-heading font-bold text-neutral-900 mb-4 sm:mb-6">Checkout</h1>
 
     @if($errors->any())
         <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r-lg">
@@ -91,10 +91,10 @@
                 </div>
 
                 <!-- Order Items -->
-                <div class="bg-white rounded-lg shadow-sm p-6">
-                    <h2 class="text-xl font-bold mb-4">🛒 Ringkasan Pesanan</h2>
+                <div class="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+                    <h2 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">🛒 Ringkasan Pesanan</h2>
                     @foreach($cartItems as $item)
-                        <div class="flex items-center gap-4 py-4 border-b border-neutral-200">
+                        <div class="flex items-center gap-3 py-3 sm:py-4 border-b border-neutral-200">
                             <div class="relative w-20 h-20 flex-shrink-0">
                                 <img src="{{ $item->productVariant->product->images->first() ? asset('storage/' . $item->productVariant->product->images->first()->image_path) : asset('images/placeholder.jpg') }}" 
                                      alt="{{ $item->productVariant->product->name }}" 
