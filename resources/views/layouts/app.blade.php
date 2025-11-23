@@ -371,7 +371,7 @@
                                     <div class="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-green-400 flex items-center justify-center text-sm font-bold text-white border-2 border-white/30 shadow-md">
                                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                                     </div>
-                                    <span class="hidden sm:inline text-sm font-medium text-white">{{ Str::limit(auth()->user()->name, 10) }}</span>
+                                    <span class="hidden sm:inline text-sm font-medium {{ in_array(auth()->user()->role, ['admin', 'super_admin']) ? 'rainbow-text' : 'text-white' }}">{{ Str::limit(auth()->user()->name, 10) }}</span>
                                     <svg class="w-4 h-4 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                     </svg>
@@ -393,6 +393,13 @@
                                     
                                     <!-- Menu Items -->
                                     <div class="py-2">
+                                        @if(in_array(auth()->user()->role, ['admin', 'super_admin']))
+                                            <a href="{{ route('admin.dashboard') }}" class="group flex items-center gap-3 px-5 py-3 text-sm text-neutral-700 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50 transition-all duration-200 border-l-4 border-transparent hover:border-orange-500">
+                                                <span class="text-xl group-hover:scale-110 transition-transform">⚡</span>
+                                                <span class="font-medium group-hover:text-orange-600 rainbow-text">Admin Dashboard</span>
+                                            </a>
+                                            <div class="border-b border-neutral-100 my-1"></div>
+                                        @endif
                                         <a href="{{ route('profile.index') }}" class="group flex items-center gap-3 px-5 py-3 text-sm text-neutral-700 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50 transition-all duration-200 border-l-4 border-transparent hover:border-orange-500">
                                             <svg class="w-5 h-5 text-neutral-400 group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -527,15 +534,8 @@
                             </div>
                         </div>
                     @endauth
-                    @auth
-                        @if(in_array(auth()->user()->role, ['admin', 'super_admin']))
-                            <a href="{{ route('admin.dashboard') }}" class="text-sm rainbow-text hover:opacity-80 px-3 py-2">{{ auth()->user()->name }}</a>
-                            <form action="{{ route('logout') }}" method="POST" class="inline">
-                                @csrf
-                                <button type="submit" class="text-sm px-4 py-2 text-neutral-600 hover:text-red-600 border border-neutral-300 rounded-lg hover:border-red-300 transition">Logout</button>
-                            </form>
-                        @endif
                     @else
+                        {{-- Guest Cart Button - Show on desktop, hidden on mobile (in hamburger menu) --}}
                         <a href="{{ route('register') }}" class="group relative px-4 py-1.5 bg-gradient-to-r from-orange-500 via-orange-600 to-green-500 text-white rounded-lg font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 overflow-hidden">
                             <span class="relative z-10 flex items-center gap-1.5 text-sm">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
