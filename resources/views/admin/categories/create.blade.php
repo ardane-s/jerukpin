@@ -7,7 +7,7 @@
     <h1 class="text-3xl font-heading font-bold text-neutral-900 mb-6">Tambah Kategori Baru</h1>
 
     <div class="bg-white rounded-lg shadow-sm p-6">
-        <form action="{{ route('admin.categories.store') }}" method="POST">
+        <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="mb-4">
@@ -37,6 +37,16 @@
                     class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                     placeholder="Deskripsi kategori...">{{ old('description') }}</textarea>
                 @error('description')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+            
+            <div class="mb-4">
+                <label for="image" class="block text-sm font-medium text-neutral-700 mb-2">Gambar Kategori</label>
+                <input type="file" name="image" id="image" accept="image/*"
+                    class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                <p class="mt-1 text-sm text-neutral-500">Format: JPG, PNG, GIF (Max. 2MB)</p>
+                @error('image')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>

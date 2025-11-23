@@ -7,7 +7,7 @@
     <h1 class="text-3xl font-heading font-bold text-neutral-900 mb-6">Edit Kategori</h1>
 
     <div class="bg-white rounded-lg shadow-sm p-6">
-        <form action="{{ route('admin.categories.update', $category) }}" method="POST">
+        <form action="{{ route('admin.categories.update', $category) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -34,6 +34,21 @@
                 <textarea name="description" id="description" rows="3"
                     class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">{{ old('description', $category->description) }}</textarea>
                 @error('description')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+            
+            <div class="mb-4">
+                <label for="image" class="block text-sm font-medium text-neutral-700 mb-2">Gambar Kategori</label>
+                @if($category->image)
+                    <div class="mb-2">
+                        <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="h-20 w-20 object-cover rounded-lg">
+                    </div>
+                @endif
+                <input type="file" name="image" id="image" accept="image/*"
+                    class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                <p class="mt-1 text-sm text-neutral-500">Format: JPG, PNG, GIF (Max. 2MB). Biarkan kosong jika tidak ingin mengubah gambar.</p>
+                @error('image')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>

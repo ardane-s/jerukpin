@@ -18,6 +18,7 @@
     <table class="min-w-full divide-y divide-neutral-200">
         <thead class="bg-neutral-50">
             <tr>
+                <th class="px-6 py-3.5 text-left text-xs font-semibold text-neutral-700 uppercase tracking-wider">Gambar</th>
                 <th class="px-6 py-3.5 text-left text-xs font-semibold text-neutral-700 uppercase tracking-wider">Nama</th>
                 <th class="px-6 py-3.5 text-left text-xs font-semibold text-neutral-700 uppercase tracking-wider">Slug</th>
                 <th class="px-6 py-3.5 text-left text-xs font-semibold text-neutral-700 uppercase tracking-wider">Jumlah Produk</th>
@@ -28,6 +29,17 @@
         <tbody class="bg-white divide-y divide-neutral-200">
             @forelse($categories as $category)
                 <tr class="hover:bg-neutral-50 transition">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        @if($category->image)
+                            <img src="{{ asset('storage/' . $category->image) }}" 
+                                 alt="{{ $category->name }}" 
+                                 class="w-12 h-12 rounded object-cover">
+                        @else
+                            <div class="w-12 h-12 rounded bg-orange-50 flex items-center justify-center">
+                                <span class="text-2xl">🍊</span>
+                            </div>
+                        @endif
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm font-semibold text-neutral-900">{{ $category->name }}</div>
                         @if($category->description)
@@ -70,7 +82,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" class="px-6 py-12 text-center">
+                    <td colspan="6" class="px-6 py-12 text-center">
                         <svg class="mx-auto h-12 w-12 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
                         </svg>

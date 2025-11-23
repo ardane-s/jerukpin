@@ -29,12 +29,17 @@ class AdminCategoryController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'required|string|unique:categories,slug|max:255',
             'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'is_active' => 'boolean',
         ]);
         
         // Auto-generate slug if not provided
         if (empty($validated['slug'])) {
             $validated['slug'] = Str::slug($validated['name']);
+        }
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('categories', 'public');
         }
         
         Category::create($validated);
@@ -54,9 +59,18 @@ class AdminCategoryController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:categories,slug,' . $category->id,
             'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'is_active' => 'boolean',
         ]);
         
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($category->image) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($category->image);
+            }
+            $validated['image'] = $request->file('image')->store('categories', 'public');
+        }
+
         $category->update($validated);
         
         return redirect()->route('admin.categories.index')
@@ -71,6 +85,10 @@ class AdminCategoryController extends Controller
                 ->with('error', 'Kategori tidak dapat dihapus karena masih memiliki produk.');
         }
         
+        if ($category->image) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($category->image);
+        }
+
         $category->delete();
         
         return redirect()->route('admin.categories.index')
