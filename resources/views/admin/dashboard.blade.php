@@ -1,17 +1,4 @@
 ﻿@extends('admin.layouts.app')
-
-@section('title', 'Dashboard Admin')
-@section('page-title', 'Dashboard')
-@section('page-description', 'Ringkasan performa toko JerukPin')
-
-@section('content')
-<!-- Statistics Cards -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-    <!-- Products Card -->
-    <div class="bg-white rounded-xl shadow-sm border border-neutral-200 p-6 hover:shadow-md transition">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-sm font-medium text-neutral-600 mb-1">Total Produk</p>
                 <p class="text-3xl font-bold text-neutral-900">{{ $stats['total_products'] }}</p>
                 <a href="{{ route('admin.products.index') }}" class="text-xs text-orange-600 hover:text-orange-700 font-medium mt-2 inline-block">
                     Lihat semua →
