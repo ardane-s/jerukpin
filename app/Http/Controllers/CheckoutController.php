@@ -92,6 +92,14 @@ class CheckoutController extends Controller
             
             $order = Order::create($orderData);
             
+            // Create admin notification for new order
+            \App\Models\Notification::createNotification(
+                'new_order',
+                'New Order Received',
+                "Order #{$order->order_number} - Rp " . number_format($order->total, 0, ',', '.'),
+                ['order_id' => $order->id, 'order_number' => $order->order_number]
+            );
+            
             // Create order items with snapshots
             foreach ($cartItems as $item) {
                 $variant = $item->productVariant;

@@ -38,7 +38,7 @@ class ReviewController extends Controller
         }
 
         // Create review
-        Review::create([
+        $review = Review::create([
             'user_id' => Auth::id(),
             'order_item_id' => $request->order_item_id,
             'product_id' => $request->product_id,
@@ -46,6 +46,15 @@ class ReviewController extends Controller
             'comment' => $request->comment,
             'is_approved' => true, // Auto-approve for now, can change to false later
         ]);
+        
+        // Notify admin about new review
+        $product = \App\Models\Product::find($request->product_id);
+        \App\Models\Notification::createNotification(
+            'review_submitted',
+            'New Review Submitted',
+            "{$review->user->name} reviewed {$product->name} - {$request->rating} stars",
+            ['review_id' => $review->id, 'product_id' => $product->id]
+        );
 
         return back()->with('success', 'Terima kasih! Ulasan Anda telah berhasil dikirim.');
     }

@@ -120,6 +120,14 @@ class OrderController extends Controller
         // Update order status
         $order->update(['status' => 'payment_uploaded']);
         
+        // Notify admin about payment upload
+        \App\Models\Notification::createNotification(
+            'payment_uploaded',
+            'Payment Proof Uploaded',
+            "Order #{$order->order_number} - Rp " . number_format($request->payment_amount, 0, ',', '.'),
+            ['order_id' => $order->id, 'order_number' => $order->order_number]
+        );
+        
         return redirect()->route('orders.show', $orderNumber)
             ->with('success', 'Bukti pembayaran berhasil diupload. Pesanan Anda akan segera diproses.');
     }
