@@ -147,6 +147,34 @@ Route::get('/admin/check-and-seed', function () {
         abort(403, 'Admin access required. If database is empty, use ?key=jerukpin_deploy_2025');
     }
 
+    // Check for confirmation
+    if (!request()->has('confirmed')) {
+        $key = request()->query('key');
+        $url = route('admin.check-and-seed', ['key' => $key, 'confirmed' => 1]);
+        
+        return "
+        <div style='font-family: sans-serif; max-width: 600px; margin: 50px auto; padding: 30px; border: 2px solid #ef4444; border-radius: 10px; text-align: center; background-color: #fef2f2;'>
+            <h1 style='color: #b91c1c; margin-top: 0;'>⚠️ DANGER ZONE ⚠️</h1>
+            <p style='font-size: 18px; line-height: 1.5; color: #7f1d1d;'>
+                You are about to <strong>RESET the Production Database</strong>.
+            </p>
+            <ul style='text-align: left; display: inline-block; color: #991b1b; margin-bottom: 20px;'>
+                <li>All <strong>Orders</strong> will be deleted.</li>
+                <li>All <strong>Customers</strong> will be deleted.</li>
+                <li>All <strong>Reviews</strong> will be deleted.</li>
+                <li>Admin, Categories, and Products will be preserved/restored.</li>
+            </ul>
+            <br>
+            <a href='$url' style='display: inline-block; background-color: #dc2626; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px;'>
+                YES, RESET DATABASE
+            </a>
+            <p style='margin-top: 20px; font-size: 14px; color: #666;'>
+                This action cannot be undone.
+            </p>
+        </div>
+        ";
+    }
+
     try {
         // Run the check and seed command
         // Run migrations first to ensure schema is up to date
