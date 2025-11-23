@@ -216,17 +216,6 @@
             <div class="flex justify-between text-sm">
                 <span>Subtotal</span>
                 <span>Rp {{ number_format($order->subtotal, 0, ',', '.') }}</span>
-            </div>
-            <div class="flex justify-between text-sm">
-                <span>Ongkir</span>
-                <span>Rp {{ number_format($order->shipping_cost, 0, ',', '.') }}</span>
-            </div>
-            <div class="flex justify-between text-lg font-bold">
-                <span>Total</span>
-                <span class="text-primary-600">Rp {{ number_format($order->total, 0, ',', '.') }}</span>
-            </div>
-        </div>
-    </div>
 
     <!-- Customer Info -->
     <div class="bg-white rounded-lg shadow-sm p-6">
