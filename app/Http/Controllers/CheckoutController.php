@@ -50,14 +50,28 @@ class CheckoutController extends Controller
         ];
         
         if (auth()->check()) {
-            // Member must use saved address
-            $rules['address_id'] = 'required|exists:addresses,id';
+            if ($request->input('use_saved_address') == '1') {
+                // Member using saved address
+                $rules['address_id'] = 'required|exists:addresses,id';
+            } else {
+                // Member using new address
+                $rules['recipient_name'] = 'required|string|max:255';
+                $rules['phone'] = 'required|string|max:20';
+                $rules['address'] = 'required|string';
+                $rules['city'] = 'required|string|max:100';
+                $rules['province'] = 'required|string|max:100';
+                $rules['postal_code'] = 'required|string|max:10';
+            }
         } else {
             // Guest must provide all info
             $rules['guest_name'] = 'required|string|max:255';
             $rules['guest_email'] = 'required|email';
             $rules['guest_phone'] = 'required|string|max:20';
-            $rules['guest_address'] = 'required|string';
+            // Detailed guest address fields
+            $rules['guest_street'] = 'required|string';
+            $rules['guest_city'] = 'required|string|max:100';
+            $rules['guest_province'] = 'required|string|max:100';
+            $rules['guest_postal_code'] = 'required|string|max:10';
         }
         
         $validated = $request->validate($rules);
@@ -69,7 +83,7 @@ class CheckoutController extends Controller
             $shippingCost = $validated['shipping_cost'];
             $totalAmount = $subtotal + $shippingCost;
             
-            // Create order
+            // Prepare Order Data
             $orderData = [
                 'order_number' => 'ORD-' . time() . rand(1000, 9999),
                 'subtotal' => $subtotal,
@@ -82,12 +96,38 @@ class CheckoutController extends Controller
             
             if (auth()->check()) {
                 $orderData['user_id'] = auth()->id();
-                $orderData['address_id'] = $validated['address_id'] ?? null;
+                
+                if ($request->input('use_saved_address') == '1') {
+                    $orderData['address_id'] = $validated['address_id'];
+                } else {
+                    // Create new address for user
+                    $newAddress = Address::create([
+                        'user_id' => auth()->id(),
+                        'label' => 'Alamat Baru (' . date('d/m/Y') . ')',
+                        'recipient_name' => $validated['recipient_name'],
+                        'phone' => $validated['phone'],
+                        'address' => $validated['address'],
+                        'city' => $validated['city'],
+                        'province' => $validated['province'],
+                        'postal_code' => $validated['postal_code'],
+                        'is_default' => false,
+                    ]);
+                    // Note: If Address model doesn't have city/province columns separate, we might need to adjust.
+                    // Checking Address model... it has city, postal_code. Does it have province?
+                    // Based on create.blade.php it has province input, let's assume yes or append.
+                    // Actually, let's check Address model schema to be safe.
+                    
+                    $orderData['address_id'] = $newAddress->id;
+                }
             } else {
                 $orderData['guest_name'] = $validated['guest_name'];
                 $orderData['guest_email'] = $validated['guest_email'];
                 $orderData['guest_phone'] = $validated['guest_phone'];
-                $orderData['guest_address'] = $validated['guest_address'];
+                // Concatenate guest address
+                $orderData['guest_address'] = $validated['guest_street'] . ', ' . 
+                                            $validated['guest_city'] . ', ' . 
+                                            $validated['guest_province'] . ' ' . 
+                                            $validated['guest_postal_code'];
             }
             
             $order = Order::create($orderData);

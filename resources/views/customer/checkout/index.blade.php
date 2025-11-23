@@ -54,38 +54,75 @@
                             </div>
                         @endif
                         
-                        <div id="new-address-fields" class="{{ $addresses->count() > 0 ? 'hidden' : '' }}">
-                            @php
-                                // Get the most recent address (from saved addresses or last order)
-                                $lastAddress = $addresses->first() 
-                                    ? $addresses->first()->full_address 
-                                    : auth()->user()->orders()->latest()->first()?->address?->full_address ?? '';
-                            @endphp
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium mb-2">Alamat Lengkap *</label>
-                                <textarea name="shipping_address" rows="3" class="w-full px-4 py-2 border border-neutral-300 rounded-lg">{{ old('shipping_address', $lastAddress) }}</textarea>
+                        <div id="new-address-fields" class="{{ $addresses->count() > 0 ? 'hidden' : '' }} space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Nama Penerima *</label>
+                                    <input type="text" name="recipient_name" value="{{ old('recipient_name', auth()->user()->name) }}" class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-orange-500 focus:border-orange-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">No. Telepon *</label>
+                                    <input type="text" name="phone" value="{{ old('phone', auth()->user()->phone) }}" class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-orange-500 focus:border-orange-500">
+                                </div>
                             </div>
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium mb-2">No. Telepon *</label>
-                                <input type="text" name="phone" value="{{ old('phone', auth()->user()->phone) }}" class="w-full px-4 py-2 border border-neutral-300 rounded-lg">
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Alamat Lengkap (Jalan, No. Rumah, RT/RW) *</label>
+                                <textarea name="address" rows="2" class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-orange-500 focus:border-orange-500" placeholder="Contoh: Jl. Jeruk Manis No. 12, RT 01/RW 02">{{ old('address') }}</textarea>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Kota/Kabupaten *</label>
+                                    <input type="text" name="city" value="{{ old('city') }}" class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-orange-500 focus:border-orange-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Provinsi *</label>
+                                    <input type="text" name="province" value="{{ old('province') }}" class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-orange-500 focus:border-orange-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Kode Pos *</label>
+                                    <input type="text" name="postal_code" value="{{ old('postal_code') }}" class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-orange-500 focus:border-orange-500">
+                                </div>
                             </div>
                         </div>
                     @else
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium mb-2">Nama Lengkap *</label>
-                            <input type="text" name="guest_name" value="{{ old('guest_name') }}" required class="w-full px-4 py-2 border border-neutral-300 rounded-lg">
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium mb-2">Email *</label>
-                            <input type="email" name="guest_email" value="{{ old('guest_email') }}" required class="w-full px-4 py-2 border border-neutral-300 rounded-lg">
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium mb-2">No. Telepon *</label>
-                            <input type="text" name="guest_phone" value="{{ old('guest_phone') }}" required class="w-full px-4 py-2 border border-neutral-300 rounded-lg">
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium mb-2">Alamat Lengkap *</label>
-                            <textarea name="guest_address" rows="3" required class="w-full px-4 py-2 border border-neutral-300 rounded-lg">{{ old('guest_address') }}</textarea>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Nama Lengkap *</label>
+                                    <input type="text" name="guest_name" value="{{ old('guest_name') }}" required class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-orange-500 focus:border-orange-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Email *</label>
+                                    <input type="email" name="guest_email" value="{{ old('guest_email') }}" required class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-orange-500 focus:border-orange-500">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium mb-2">No. Telepon *</label>
+                                <input type="text" name="guest_phone" value="{{ old('guest_phone') }}" required class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-orange-500 focus:border-orange-500">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Alamat Lengkap (Jalan, No. Rumah, RT/RW) *</label>
+                                <textarea name="guest_street" rows="2" required class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-orange-500 focus:border-orange-500" placeholder="Contoh: Jl. Jeruk Manis No. 12, RT 01/RW 02">{{ old('guest_street') }}</textarea>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Kota/Kabupaten *</label>
+                                    <input type="text" name="guest_city" value="{{ old('guest_city') }}" required class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-orange-500 focus:border-orange-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Provinsi *</label>
+                                    <input type="text" name="guest_province" value="{{ old('guest_province') }}" required class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-orange-500 focus:border-orange-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Kode Pos *</label>
+                                    <input type="text" name="guest_postal_code" value="{{ old('guest_postal_code') }}" required class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-orange-500 focus:border-orange-500">
+                                </div>
+                            </div>
                         </div>
                     @endauth
                 </div>
