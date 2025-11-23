@@ -12,35 +12,46 @@
     <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;1&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
     
     <!-- Content -->
-    <div class="relative max-w-7xl mx-auto px-4 text-center">
-        <!-- Category Icon/Badge -->
-        <!-- Category Icon/Badge -->
-        <div class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-2xl shadow-xl mb-6 transform hover:scale-110 transition-transform duration-300 overflow-hidden">
-            @if($category->image)
-                <img src="{{ asset('storage/' . $category->image) }}" 
-                     alt="{{ $category->name }}" 
-                     class="w-full h-full object-cover">
-            @else
-                <span class="text-4xl">🍊</span>
-            @endif
-        </div>
-        
-        <!-- Category Name -->
-        <h1 class="text-5xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
-            {{ $category->name }}
-        </h1>
-        
-        <!-- Category Description -->
-        <p class="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
-            {{ $category->description }}
-        </p>
-        
-        <!-- Product Count Badge -->
-        <div class="mt-8 inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full border-2 border-white/30">
-            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-            </svg>
-            <span class="text-white font-semibold">{{ $products->total() }} Produk Tersedia</span>
+    <div class="relative max-w-7xl mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
+            <!-- Left: Text Content -->
+            <div class="flex-1 text-center md:text-left">
+                <!-- Category Name -->
+                <h1 class="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg leading-tight">
+                    {{ $category->name }}
+                </h1>
+                
+                <!-- Category Description -->
+                <p class="text-lg md:text-xl text-white/90 mb-8 leading-relaxed drop-shadow-md max-w-2xl">
+                    {{ $category->description }}
+                </p>
+                
+                <!-- Product Count Badge -->
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full border-2 border-white/30 hover:bg-white/30 transition-colors">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                    </svg>
+                    <span class="text-white font-semibold">{{ $products->total() }} Produk Tersedia</span>
+                </div>
+            </div>
+
+            <!-- Right: Large Image -->
+            <div class="flex-shrink-0">
+                <div class="relative w-48 h-48 md:w-72 md:h-72 bg-white rounded-3xl shadow-2xl transform rotate-3 hover:rotate-0 transition-all duration-500 p-2">
+                    <div class="w-full h-full rounded-2xl overflow-hidden bg-orange-50 flex items-center justify-center">
+                        @if($category->image)
+                            <img src="{{ asset('storage/' . $category->image) }}" 
+                                 alt="{{ $category->name }}" 
+                                 class="w-full h-full object-cover">
+                        @else
+                            <span class="text-8xl">🍊</span>
+                        @endif
+                    </div>
+                    <!-- Decorative Elements -->
+                    <div class="absolute -top-4 -right-4 w-12 h-12 bg-yellow-400 rounded-full blur-xl opacity-60 animate-pulse"></div>
+                    <div class="absolute -bottom-4 -left-4 w-12 h-12 bg-orange-400 rounded-full blur-xl opacity-60 animate-pulse delay-700"></div>
+                </div>
+            </div>
         </div>
     </div>
     
