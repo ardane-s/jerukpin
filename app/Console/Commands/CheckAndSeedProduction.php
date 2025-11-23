@@ -52,19 +52,20 @@ class CheckAndSeedProduction extends Command
             $this->info('STEP 2: Checking essential data...');
             
             // Check admin
-            $adminCount = User::where('role', 'admin')->count();
-            if ($adminCount === 0) {
-                $this->warn('⚠️  No admin found! Creating admin account...');
+            $adminUser = User::where('email', 'jerukpin@gmail.com')->first();
+            if (!$adminUser) {
+                $this->warn('⚠️  Admin (jerukpin@gmail.com) not found! Creating...');
                 User::create([
-                    'name' => 'Admin',
-                    'email' => 'admin@jerukpin.com',
-                    'password' => bcrypt('admin123'),
+                    'name' => 'Admin JerukPin',
+                    'email' => 'jerukpin@gmail.com',
+                    'password' => bcrypt('password'),
                     'role' => 'admin',
                     'phone' => '081234567890',
+                    'email_verified_at' => now(),
                 ]);
-                $this->info('✓ Admin created (email: admin@jerukpin.com, password: admin123)');
+                $this->info('✓ Admin created (email: jerukpin@gmail.com, password: password)');
             } else {
-                $this->info("✓ Admin exists ({$adminCount} account(s))");
+                $this->info("✓ Admin exists (jerukpin@gmail.com)");
             }
             
             // Check categories
