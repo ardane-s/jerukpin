@@ -228,6 +228,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 @endif
             @elseif($order->status == 'payment_uploaded')
                 <div class="bg-blue-50 border-t-4 border-blue-400 px-6 py-4">
