@@ -188,6 +188,19 @@
                                 </div>
                             </div>
                         </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- Product List -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <h2 class="text-xl font-bold mb-4">Produk</h2>
+        @foreach($order->orderItems as $item)
+            <div class="flex justify-between mb-3 pb-3 border-b last:border-b-0">
+                <div>
+                    <p class="font-bold">{{ $item->product_name }}</p>
                     <p class="text-sm text-neutral-500">{{ $item->variant_name }} × {{ $item->quantity }}</p>
                     @if($item->is_flash_sale)
                         <span class="text-xs bg-primary-100 text-primary-800 px-2 py-0.5 rounded">🔥 Flash Sale</span>
