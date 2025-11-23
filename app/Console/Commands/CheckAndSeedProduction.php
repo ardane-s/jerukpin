@@ -58,14 +58,18 @@ class CheckAndSeedProduction extends Command
                 User::create([
                     'name' => 'Admin JerukPin',
                     'email' => 'jerukpin@gmail.com',
-                    'password' => bcrypt('password'),
+                    'password' => bcrypt('Jerukjerukjerukpin!'),
                     'role' => 'admin',
                     'phone' => '081234567890',
                     'email_verified_at' => now(),
                 ]);
-                $this->info('✓ Admin created (email: jerukpin@gmail.com, password: password)');
+                $this->info('✓ Admin created (email: jerukpin@gmail.com)');
             } else {
-                $this->info("✓ Admin exists (jerukpin@gmail.com)");
+                // Update password for existing admin to ensure it matches
+                $adminUser->update([
+                    'password' => bcrypt('Jerukjerukjerukpin!')
+                ]);
+                $this->info("✓ Admin exists & password updated (jerukpin@gmail.com)");
             }
             
             // Check categories
