@@ -153,26 +153,6 @@
                                                         No. HP / ID:
                                                     @endif
                                                 </span>
-                                                <span class="font-bold text-neutral-900" id="accountInfo">{{ $paymentMethods->first()->account_info }}</span>
-                                            </div>
-                                        @endif
-                                        @if($paymentMethods->first()->account_name)
-                                            <div class="flex justify-between items-center">
-                                                <span class="text-neutral-600 font-medium">Atas Nama:</span>
-                                                <span class="font-bold text-neutral-900" id="accountName">{{ $paymentMethods->first()->account_name }}</span>
-                                            </div>
-                                        @endif
-                                        <div class="border-t-2 border-dashed border-neutral-200 pt-2 mt-2">
-                                            <div class="flex justify-between items-center">
-                                                <span class="text-neutral-600 font-medium">Jumlah Transfer:</span>
-                                                <span class="text-2xl font-bold text-orange-600">Rp {{ number_format($order->total, 0, ',', '.') }}</span>
-                                            </div>
-                                        </div>
-                                        
-                                        {{-- Instructions if available --}}
-                                        <div id="paymentInstructions" class="mt-3">
-                                            @if($paymentMethods->first()->instructions)
-                                                <div class="p-3 bg-blue-50 rounded-lg border border-blue-200">
                                                     <p class="text-sm text-blue-800">ℹ️ <span id="instructionsText">{{ $paymentMethods->first()->instructions }}</span></p>
                                                 </div>
                                             @endif

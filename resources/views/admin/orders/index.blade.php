@@ -60,7 +60,7 @@
                         @endif
                     </td>
                     <td class="px-6 py-4">
-                        <span class="text-sm font-semibold text-neutral-900">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</span>
+                        <span class="text-sm font-semibold text-neutral-900">Rp {{ number_format($order->total, 0, ',', '.') }}</span>
                     </td>
                     <td class="px-6 py-4">
                         @if($order->status == 'pending_payment')
