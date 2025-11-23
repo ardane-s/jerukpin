@@ -221,6 +221,12 @@
                 <span>Ongkir</span>
                 <span>Rp {{ number_format($order->shipping_cost, 0, ',', '.') }}</span>
             </div>
+            @if($order->shippingMethod)
+                <div class="flex justify-between text-sm text-blue-700 bg-blue-50 px-2 py-1 rounded">
+                    <span>{{ $order->shippingMethod->icon }} {{ $order->shippingMethod->name }}</span>
+                    <span class="text-xs text-neutral-500">{{ $order->shippingMethod->estimate_text }}</span>
+                </div>
+            @endif
             <div class="flex justify-between text-lg font-bold">
                 <span>Total</span>
                 <span class="text-primary-600">Rp {{ number_format($order->total, 0, ',', '.') }}</span>
