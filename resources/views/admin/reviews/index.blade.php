@@ -42,34 +42,6 @@
                 <th class="px-6 py-3.5 text-left text-xs font-semibold text-neutral-700 uppercase tracking-wider">Tanggal</th>
                 <th class="px-6 py-3.5 text-right text-xs font-semibold text-neutral-700 uppercase tracking-wider">Aksi</th>
             </tr>
-        </thead>
-        <tbody class="divide-y divide-neutral-200">
-            @forelse($reviews as $review)
-            <tr class="hover:bg-neutral-50 transition">
-                <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                        @if($review->product->images->first())
-                            <img src="{{ asset('storage/' . $review->product->images->first()->image_path) }}" 
-                                 alt="{{ $review->product->name }}" 
-                                 class="w-12 h-12 rounded-lg object-cover border border-neutral-200">
-                        @else
-                            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                                <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                                </svg>
-                            </div>
-                        @endif
-                        <div>
-                            <div class="text-sm font-semibold text-neutral-900">{{ $review->product->name }}</div>
-                        </div>
-                    </div>
-                </td>
-                <td class="px-6 py-4">
-                    <div class="text-sm font-semibold text-neutral-900">{{ $review->user->name }}</div>
-                    <div class="text-xs text-neutral-500 mt-0.5">{{ $review->user->email }}</div>
-                </td>
-                <td class="px-6 py-4">
-                    <div class="flex items-center gap-2">
                         <div class="flex gap-0.5">
                             @for($i = 1; $i <= 5; $i++)
                                 <svg class="w-4 h-4 {{ $i <= $review->rating ? 'text-yellow-400' : 'text-neutral-300' }}" fill="currentColor" viewBox="0 0 20 20">
