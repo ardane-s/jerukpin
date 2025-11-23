@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\ProductVariant;
 use App\Models\Address;
+use App\Models\ShippingMethod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -23,11 +24,14 @@ class CheckoutController extends Controller
         $subtotal = $this->calculateTotal($cartItems);
         $addresses = auth()->check() ? auth()->user()->addresses : collect();
         
+        // Load active shipping methods
+        $shippingMethods = ShippingMethod::active()->ordered()->get();
+        
         // Calculate shipping cost dynamically
         $shippingCost = \App\Models\Setting::calculateShipping($subtotal);
         $freeShippingThreshold = \App\Models\Setting::getFreeShippingThreshold();
         
-        return view('customer.checkout.index', compact('cartItems', 'subtotal', 'addresses', 'shippingCost', 'freeShippingThreshold'));
+        return view('customer.checkout.index', compact('cartItems', 'subtotal', 'addresses', 'shippingMethods', 'shippingCost', 'freeShippingThreshold'));
     }
     
     public function store(Request $request)
@@ -40,6 +44,7 @@ class CheckoutController extends Controller
         
         // Validation
         $rules = [
+            'shipping_method_id' => 'required|exists:shipping_methods,id',
             'shipping_cost' => 'required|numeric|min:0',
             'payment_method' => 'required|in:bank_transfer,e_wallet,cod',
         ];
@@ -69,6 +74,7 @@ class CheckoutController extends Controller
                 'order_number' => 'ORD-' . time() . rand(1000, 9999),
                 'subtotal' => $subtotal,
                 'shipping_cost' => $shippingCost,
+                'shipping_method_id' => $validated['shipping_method_id'],
                 'total' => $totalAmount,
                 'status' => 'pending_payment',
                 'payment_method' => $validated['payment_method'],

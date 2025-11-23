@@ -86,9 +86,9 @@
                     <span class="nav-icon">💳</span>
                     <span>Metode Bayar</span>
                 </a>
-                <a href="{{ route('admin.settings.shipping') }}" class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.shipping-methods.index') }}" class="nav-link {{ request()->routeIs('admin.shipping-methods.*') ? 'active' : '' }}">
                     <span class="nav-icon">🚚</span>
-                    <span>Pengaturan Ongkir</span>
+                    <span>Metode Pengiriman</span>
                 </a>
                 <div style="margin: 16px 0; border-top: 1px solid rgba(255,255,255,0.1);"></div>
                 <a href="{{ route('home') }}" target="_blank" class="nav-link">

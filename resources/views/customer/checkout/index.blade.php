@@ -113,6 +113,45 @@
                     @endforeach
                 </div>
 
+                <!-- Shipping Method Selection -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h2 class="text-xl font-bold mb-4">🚚 Metode Pengiriman</h2>
+                    
+                    @if($shippingMethods->count() > 0)
+                        <div class="space-y-3">
+                            @php $firstShipping = true; @endphp
+                            @foreach($shippingMethods as $method)
+                                <label class="flex items-center p-4 border-2 rounded-lg cursor-pointer transition hover:border-orange-500 {{ $firstShipping ? 'border-orange-600 bg-orange-50' : 'border-neutral-200' }}">
+                                    <input type="radio" name="shipping_method_id" value="{{ $method->id }}" 
+                                           data-cost="{{ $method->base_cost }}"
+                                           class="shipping-method-radio mr-4" {{ $firstShipping ? 'checked' : '' }} required>
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-2xl">{{ $method->icon }}</span>
+                                            <div>
+                                                <div class="font-bold text-neutral-900">{{ $method->name }}</div>
+                                                @if($method->description)
+                                                    <div class="text-sm text-neutral-500">{{ $method->description }}</div>
+                                                @endif
+                                                <div class="text-xs text-neutral-600 mt-1">Estimasi: {{ $method->estimate_text }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-bold text-orange-600">{{ $method->formatted_cost }}</div>
+                                    </div>
+                                </label>
+                                @php $firstShipping = false; @endphp
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                            <p class="text-yellow-800 font-bold">⚠️ Tidak ada metode pengiriman tersedia</p>
+                            <p class="text-sm text-yellow-700">Hubungi admin untuk informasi lebih lanjut.</p>
+                        </div>
+                    @endif
+                </div>
+
                 <!-- Payment Method Selection -->
                 <div class="bg-white rounded-lg shadow-sm p-6">
                     <h2 class="text-xl font-bold mb-4">💳 Metode Pembayaran</h2>
@@ -202,12 +241,31 @@ document.querySelectorAll('input[name="use_saved_address"]').forEach(radio => {
         document.getElementById('new-address-fields').classList.toggle('hidden', this.value === '1');
     });
 });
-
-document.querySelector('input[name="shipping_cost"]').addEventListener('input', function() {
-    const subtotal = {{ $subtotal }};
-    const shipping = parseInt(this.value) || 0;
-    const total = subtotal + shipping;
-    document.getElementById('total-amount').textContent = total.toLocaleString('id-ID');
+// Update shipping cost and total when shipping method changes
+document.querySelectorAll('.shipping-method-radio').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const shippingCost = parseInt(this.dataset.cost) || 0;
+        const subtotal = {{ $subtotal }};
+        const total = subtotal + shippingCost;
+        
+        // Update hidden input
+        document.querySelector('input[name="shipping_cost"]').value = shippingCost;
+        
+        // Update display
+        document.getElementById('shipping-cost-display').textContent = shippingCost === 0 ? 'GRATIS! 🎉' : 'Rp ' + shippingCost.toLocaleString('id-ID');
+        document.getElementById('total-amount').textContent = 'Rp ' + total.toLocaleString('id-ID');
+        
+        // Update label styles
+        document.querySelectorAll('.shipping-method-radio').forEach(r => {
+            r.closest('label').classList.remove('border-orange-600', 'bg-orange-50');
+            r.closest('label').classList.add('border-neutral-200');
+        });
+        this.closest('label').classList.remove('border-neutral-200');
+        this.closest('label').classList.add('border-orange-600', 'bg-orange-50');
+    });
 });
+
+// Trigger change on load to set initial value
+document.querySelector('.shipping-method-radio:checked')?.dispatchEvent(new Event('change'));
 </script>
 @endsection
