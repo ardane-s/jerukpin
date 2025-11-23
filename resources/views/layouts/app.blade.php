@@ -534,7 +534,7 @@
                             </div>
                         </div>
                     @endauth
-                    @else
+                    @guest
                         {{-- Guest Cart Button - Show on desktop, hidden on mobile (in hamburger menu) --}}
                         <a href="{{ route('register') }}" class="group relative px-4 py-1.5 bg-gradient-to-r from-orange-500 via-orange-600 to-green-500 text-white rounded-lg font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 overflow-hidden">
                             <span class="relative z-10 flex items-center gap-1.5 text-sm">
