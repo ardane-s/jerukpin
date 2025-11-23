@@ -104,7 +104,7 @@ class OrderController extends Controller
         );
         
         // Upload proof image
-        $path = $request->file('proof_image')->store('payment_proofs/' . $order->id, 'public');
+        $path = $request->file('proof_image')->store('payment_proofs/' . $order->id);
         
         // Create payment proof
         PaymentProof::create([

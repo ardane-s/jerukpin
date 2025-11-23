@@ -88,7 +88,7 @@
                 <!-- Payment Proof Image -->
                 <div class="order-2 lg:order-1">
                     <div class="bg-white rounded-xl shadow-md overflow-hidden border-2 border-neutral-200">
-                        <img src="{{ asset('storage/' . $order->payment->paymentProof->proof_image_path) }}" 
+                        <img src="{{ Storage::url($order->payment->paymentProof->proof_image_path) }}" 
                              alt="Bukti Pembayaran" 
                              class="w-full h-auto cursor-pointer hover:opacity-90 transition"
                              onclick="window.open(this.src, '_blank')">

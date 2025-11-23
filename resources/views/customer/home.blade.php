@@ -151,7 +151,7 @@
                         <a href="{{ route('product.show', $sale->productVariant->product->slug) }}" class="block">
                             @if($sale->productVariant->product->images->first())
                                 <div class="aspect-square overflow-hidden bg-gradient-to-br from-orange-50 to-orange-100">
-                                    <img src="{{ asset('storage/' . $sale->productVariant->product->images->first()->image_path) }}" 
+                                    <img src="{{ Storage::url($sale->productVariant->product->images->first()->image_path) }}" 
                                          alt="{{ $sale->productVariant->product->name }}"
                                          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                          onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center text-5xl\'>🍊</div>';">
@@ -203,7 +203,7 @@
                     <a href="{{ route('product.show', $sale->productVariant->product->slug) }}" class="block">
                         @if($sale->productVariant->product->images->first())
                             <div class="aspect-square overflow-hidden bg-gradient-to-br from-orange-50 to-orange-100">
-                                <img src="{{ asset('storage/' . $sale->productVariant->product->images->first()->image_path) }}" 
+                                <img src="{{ Storage::url($sale->productVariant->product->images->first()->image_path) }}" 
                                      alt="{{ $sale->productVariant->product->name }}"
                                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                      onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center text-8xl\'>🍊</div>';">
@@ -331,7 +331,7 @@
                    class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
                     <div class="aspect-square bg-gradient-to-br from-orange-100 via-orange-50 to-green-50 flex items-center justify-center overflow-hidden">
                         @if($category->image)
-                            <img src="{{ asset('storage/' . $category->image) }}" 
+                            <img src="{{ Storage::url($category->image) }}" 
                                  alt="{{ $category->name }}" 
                                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                  onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'text-8xl group-hover:scale-110 transition-transform duration-300\'>🍊</div>';">

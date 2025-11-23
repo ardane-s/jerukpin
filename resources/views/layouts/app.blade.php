@@ -316,7 +316,7 @@
                                                 @foreach($cartItems->take(3) as $item)
                                                     <div class="flex gap-3 pb-3 border-b border-neutral-100">
                                                         @if($item->productVariant->product->images->first())
-                                                            <img src="{{ asset('storage/' . $item->productVariant->product->images->first()->image_path) }}" 
+                                                            <img src="{{ Storage::url($item->productVariant->product->images->first()->image_path) }}" 
                                                                  alt="{{ $item->productVariant->product->name }}" 
                                                                  class="w-16 h-16 object-cover rounded flex-shrink-0"
                                                                  onerror="this.onerror=null; this.src=''; this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -486,7 +486,7 @@
                                             @foreach($guestCartItems->take(3) as $item)
                                                 <div class="flex gap-3 pb-3 border-b border-neutral-100">
                                                     @if($item->productVariant->product->images->first())
-                                                        <img src="{{ asset('storage/' . $item->productVariant->product->images->first()->image_path) }}" 
+                                                        <img src="{{ Storage::url($item->productVariant->product->images->first()->image_path) }}" 
                                                              alt="{{ $item->productVariant->product->name }}" 
                                                              class="w-16 h-16 object-cover rounded flex-shrink-0"
                                                              onerror="this.onerror=null; this.src=''; this.style.display='none'; this.nextElementSibling.style.display='flex';">

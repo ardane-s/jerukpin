@@ -49,7 +49,7 @@
                 <td class="px-6 py-4">
                     <div class="flex items-center gap-3">
                         @if($review->product && $review->product->images->count() > 0)
-                            <img src="{{ asset('storage/' . $review->product->images->first()->image_path) }}" 
+                            <img src="{{ Storage::url($review->product->images->first()->image_path) }}" 
                                  alt="{{ $review->product->name }}" 
                                  class="w-12 h-12 rounded object-cover">
                         @else

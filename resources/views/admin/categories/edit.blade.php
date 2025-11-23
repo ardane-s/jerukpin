@@ -42,7 +42,7 @@
                 <label for="image" class="block text-sm font-medium text-neutral-700 mb-2">Gambar Kategori</label>
                 @if($category->image)
                     <div class="mb-2">
-                        <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="h-20 w-20 object-cover rounded-lg">
+                        <img src="{{ Storage::url($category->image) }}" alt="{{ $category->name }}" class="h-20 w-20 object-cover rounded-lg">
                     </div>
                 @endif
                 <input type="file" name="image" id="image" accept="image/*"

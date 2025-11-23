@@ -38,7 +38,7 @@
                                 <div class="text-9xl animate-bounce">🍊</div>
                             </div>
                         @else
-                            <img src="{{ asset('storage/' . $primaryImage->image_path) }}" 
+                            <img src="{{ Storage::url($primaryImage->image_path) }}" 
                                  alt="{{ $product->name }}" 
                                  id="main-image"
                                  class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-105"
@@ -70,10 +70,10 @@
                 @if($product->images->count() > 1)
                     <div class="grid grid-cols-4 sm:grid-cols-5 gap-2 sm:gap-3">
                         @foreach($product->images as $image)
-                            <button onclick="document.getElementById('main-image').src = '{{ asset('storage/' . $image->image_path) }}'"
+                            <button onclick="document.getElementById('main-image').src = '{{ Storage::url($image->image_path) }}'"
                                     class="aspect-square rounded-lg overflow-hidden border-2 transition-all duration-300 hover:border-primary-500 hover:shadow-md {{ $image->is_primary ? 'border-primary-500 ring-2 ring-primary-200' : 'border-neutral-200' }}">
                                 @if($image->image_path !== 'products/placeholder-orange.jpg')
-                                    <img src="{{ asset('storage/' . $image->image_path) }}" 
+                                    <img src="{{ Storage::url($image->image_path) }}" 
                                          alt="{{ $product->name }}"
                                          class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
                                 @else

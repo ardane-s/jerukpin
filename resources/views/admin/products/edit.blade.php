@@ -63,7 +63,7 @@
         <div class="grid grid-cols-5 gap-4 mb-4">
             @foreach($product->images as $image)
                 <div class="relative">
-                    <img src="{{ asset('storage/' . $image->image_path) }}" class="w-full h-32 object-cover rounded">
+                    <img src="{{ Storage::url($image->image_path) }}" class="w-full h-32 object-cover rounded">
                     @if($image->is_primary)
                         <span class="absolute top-1 left-1 bg-primary-500 text-white text-xs px-2 py-1 rounded">Utama</span>
                     @endif

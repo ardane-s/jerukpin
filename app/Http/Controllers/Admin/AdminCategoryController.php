@@ -39,7 +39,7 @@ class AdminCategoryController extends Controller
         }
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('categories', 'public');
+            $validated['image'] = $request->file('image')->store('categories');
         }
         
         Category::create($validated);
@@ -66,9 +66,9 @@ class AdminCategoryController extends Controller
         if ($request->hasFile('image')) {
             // Delete old image if exists
             if ($category->image) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($category->image);
+                \Illuminate\Support\Facades\Storage::delete($category->image);
             }
-            $validated['image'] = $request->file('image')->store('categories', 'public');
+            $validated['image'] = $request->file('image')->store('categories');
         }
 
         $category->update($validated);
@@ -86,7 +86,7 @@ class AdminCategoryController extends Controller
         }
         
         if ($category->image) {
-            \Illuminate\Support\Facades\Storage::disk('public')->delete($category->image);
+            \Illuminate\Support\Facades\Storage::delete($category->image);
         }
 
         $category->delete();

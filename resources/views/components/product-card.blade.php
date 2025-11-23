@@ -5,7 +5,7 @@
     <a href="{{ route('product.show', $product->slug) }}" class="block">
         <div class="relative overflow-hidden rounded-t-xl aspect-square" id="product-image-{{ $product->id }}">
             @if($product->images->first() && $product->images->first()->image_path !== 'products/placeholder-orange.jpg')
-                <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" 
+                <img src="{{ Storage::url($product->images->first()->image_path) }}" 
                      alt="{{ $product->name }}" 
                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                      onerror="this.style.display='none'; document.getElementById('placeholder-product-{{ $product->id }}').style.display='flex';">

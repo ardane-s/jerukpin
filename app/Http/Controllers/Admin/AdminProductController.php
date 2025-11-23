@@ -109,7 +109,7 @@ class AdminProductController extends Controller
         
         // Delete images from storage
         foreach ($product->images as $image) {
-            Storage::disk('public')->delete($image->image_path);
+            Storage::delete($image->image_path);
         }
         
         $product->delete();
@@ -136,7 +136,7 @@ class AdminProductController extends Controller
         
         $uploadedCount = 0;
         foreach ($request->file('images') as $image) {
-            $path = $image->store('products/' . $product->id, 'public');
+            $path = $image->store('products/' . $product->id);
             
             ProductImage::create([
                 'product_id' => $product->id,
@@ -154,7 +154,7 @@ class AdminProductController extends Controller
     public function deleteImage(ProductImage $image)
     {
         // Delete from storage
-        Storage::disk('public')->delete($image->image_path);
+        Storage::delete($image->image_path);
         
         // If this was primary, set another image as primary
         if ($image->is_primary) {

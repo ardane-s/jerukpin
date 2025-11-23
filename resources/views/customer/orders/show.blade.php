@@ -272,7 +272,7 @@
                             <div class="flex gap-4 p-4 bg-gradient-to-r from-orange-50 to-white rounded-xl border border-orange-100 hover:shadow-md transition">
                                 @if($item->productVariant && $item->productVariant->product && $item->productVariant->product->images->first())
                                     <div class="relative w-20 h-20 flex-shrink-0">
-                                        <img src="{{ asset('storage/' . $item->productVariant->product->images->first()->image_path) }}" 
+                                        <img src="{{ Storage::url($item->productVariant->product->images->first()->image_path) }}" 
                                              alt="{{ $item->product_name }}" 
                                              class="w-20 h-20 object-cover rounded-lg shadow-md"
                                              onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-20 h-20 bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200 flex items-center justify-center rounded-lg text-4xl\'>🍊</div>';">

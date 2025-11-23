@@ -39,7 +39,7 @@ class PaymentProof extends Model
     // Accessor
     public function getImageUrlAttribute()
     {
-        return asset('storage/' . $this->proof_image_path);
+        return Storage::url($this->proof_image_path);
     }
     
     // Helper methods

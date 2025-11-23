@@ -27,6 +27,6 @@ class ProductImage extends Model
     // Accessor
     public function getFullPathAttribute()
     {
-        return asset('storage/' . $this->image_path);
+        return Storage::url($this->image_path);
     }
 }

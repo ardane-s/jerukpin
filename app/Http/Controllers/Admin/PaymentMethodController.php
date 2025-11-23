@@ -34,7 +34,7 @@ class PaymentMethodController extends Controller
         // Handle QR image upload
         $qrImagePath = null;
         if ($request->hasFile('qr_image')) {
-            $qrImagePath = $request->file('qr_image')->store('payment_qr_codes', 'public');
+            $qrImagePath = $request->file('qr_image')->store('payment_qr_codes');
         }
 
         // Get highest sort order and add 1
@@ -77,9 +77,9 @@ class PaymentMethodController extends Controller
         if ($request->hasFile('qr_image')) {
             // Delete old image if exists
             if ($paymentMethod->qr_image) {
-                \Storage::disk('public')->delete($paymentMethod->qr_image);
+                \Storage::delete($paymentMethod->qr_image);
             }
-            $qrImagePath = $request->file('qr_image')->store('payment_qr_codes', 'public');
+            $qrImagePath = $request->file('qr_image')->store('payment_qr_codes');
         }
 
         $paymentMethod->update([

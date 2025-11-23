@@ -34,7 +34,7 @@
                             <div class="w-12 h-12 rounded-lg bg-orange-100 flex items-center justify-center relative overflow-hidden border border-neutral-200">
                                 <span class="text-2xl absolute select-none">🍊</span>
                                 @if($product->images->first())
-                                    <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" 
+                                    <img src="{{ Storage::url($product->images->first()->image_path) }}" 
                                          alt="{{ $product->name }}" 
                                          class="w-full h-full object-cover relative z-10"
                                          onerror="this.style.display='none'">

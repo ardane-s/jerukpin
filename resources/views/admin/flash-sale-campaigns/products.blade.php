@@ -95,7 +95,7 @@
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
                                 @if($sale->productVariant->product->images->first())
-                                    <img src="{{ asset('storage/' . $sale->productVariant->product->images->first()->image_path) }}" 
+                                    <img src="{{ Storage::url($sale->productVariant->product->images->first()->image_path) }}" 
                                          alt="{{ $sale->productVariant->product->name }}" 
                                          class="w-12 h-12 rounded-lg object-cover border border-neutral-200">
                                 @else

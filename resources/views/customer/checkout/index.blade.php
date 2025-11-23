@@ -133,7 +133,7 @@
                     @foreach($cartItems as $item)
                         <div class="flex items-center gap-3 py-3 sm:py-4 border-b border-neutral-200">
                             <div class="relative w-20 h-20 flex-shrink-0">
-                                <img src="{{ $item->productVariant->product->images->first() ? asset('storage/' . $item->productVariant->product->images->first()->image_path) : asset('images/placeholder.jpg') }}" 
+                                <img src="{{ $item->productVariant->product->images->first() ? Storage::url($item->productVariant->product->images->first()->image_path) : asset('images/placeholder.jpg') }}" 
                                      alt="{{ $item->productVariant->product->name }}" 
                                      class="w-20 h-20 object-cover rounded-lg"
                                      onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-20 h-20 bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200 flex items-center justify-center rounded-lg text-4xl\'>🍊</div>';">

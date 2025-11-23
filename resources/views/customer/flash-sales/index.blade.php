@@ -79,7 +79,7 @@
                             <!-- Product Image -->
                             <div class="relative overflow-hidden aspect-square" id="product-card-{{ $sale->id }}">
                                 @if($image && $image->image_path !== 'products/placeholder-orange.jpg')
-                                    <img src="{{ asset('storage/' . $image->image_path) }}" 
+                                    <img src="{{ Storage::url($image->image_path) }}" 
                                          alt="{{ $product->name }}" 
                                          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                          onerror="this.style.display='none'; document.getElementById('placeholder-{{ $sale->id }}').style.display='flex';">

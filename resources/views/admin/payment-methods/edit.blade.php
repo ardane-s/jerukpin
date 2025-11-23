@@ -53,7 +53,7 @@
                 
                 @if($paymentMethod->qr_image)
                     <div class="mb-3">
-                        <img src="{{ asset('storage/' . $paymentMethod->qr_image) }}" class="max-w-xs rounded-lg border-2 border-neutral-200">
+                        <img src="{{ Storage::url($paymentMethod->qr_image) }}" class="max-w-xs rounded-lg border-2 border-neutral-200">
                         <p class="text-xs text-neutral-500 mt-1">QR Code saat ini</p>
                     </div>
                 @endif

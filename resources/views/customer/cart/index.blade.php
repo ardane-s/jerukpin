@@ -36,7 +36,7 @@
                         <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
                             <!-- Product Image -->
                             @if($item->productVariant->product->images->first())
-                                <img src="{{ asset('storage/' . $item->productVariant->product->images->first()->image_path) }}" 
+                                <img src="{{ Storage::url($item->productVariant->product->images->first()->image_path) }}" 
                                      alt="{{ $item->productVariant->product->name }}" 
                                      class="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-xl border-2 border-orange-200 mx-auto sm:mx-0"
                                      onerror="this.onerror=null; this.src=''; this.style.display='none'; this.nextElementSibling.style.display='flex';">

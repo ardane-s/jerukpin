@@ -31,7 +31,7 @@
                 <tr class="hover:bg-neutral-50 transition">
                     <td class="px-6 py-4 whitespace-nowrap">
                         @if($category->image)
-                            <img src="{{ asset('storage/' . $category->image) }}" 
+                            <img src="{{ Storage::url($category->image) }}" 
                                  alt="{{ $category->name }}" 
                                  class="w-12 h-12 rounded object-cover">
                         @else
