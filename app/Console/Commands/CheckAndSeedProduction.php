@@ -33,6 +33,9 @@ class CheckAndSeedProduction extends Command
         try {
             DB::beginTransaction();
             
+            // Disable foreign key checks
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            
             // Delete test data (keep structure)
             User::where('role', '!=', 'admin')->delete();
             DB::table('payment_proofs')->truncate();
@@ -44,6 +47,9 @@ class CheckAndSeedProduction extends Command
             DB::table('wishlists')->truncate();
             DB::table('addresses')->truncate();
             DB::table('notifications')->truncate();
+            
+            // Re-enable foreign key checks
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
             
             $this->info('✓ Test data cleaned');
             
